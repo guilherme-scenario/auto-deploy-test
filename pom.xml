@@ -20,11 +20,6 @@
 		<pluginManagement>
 			<plugins>
 				<plugin>
-					<groupId>com.github.ferstl</groupId>
-					<artifactId>depgraph-maven-plugin</artifactId>
-					<version>3.3.3</version>
-				</plugin>
-				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-assembly-plugin</artifactId>
 					<version>3.0.0</version>
