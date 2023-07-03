@@ -51,5 +51,4 @@ jobs:
         sudo kill -9 `sudo lsof -t -i:8080` &
         sudo \
           AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }} \
-          AWS_SECRET_ID=${{ secrets.AWS_SECRET_ID }} \
           java -jar /home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar >> logs &
