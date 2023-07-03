@@ -49,13 +49,4 @@ jobs:
       run: |
         echo $MY_SECRET_TEST $AWS_ACCESS_KEY_ID $AWS_SECRET_KEY $AWS_REGION &
         sudo kill -9 `sudo lsof -t -i:8080` &
-        sudo java -jar /home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar >> logs &
-    - name: Check Status
-      run: |
-        RESPONSE=$(curl -s -w "%{http_code}" "http://ec2-54-157-44-149.compute-1.amazonaws.com:8080/ping")
-        if [[ "$RESPONSE" == "200" ]]; then
-          echo "Request succeeded. Continuing the workflow..."
-        else
-          echo "Request failed with status code $RESPONSE. Stopping the workflow."
-          exit 1
-        fi
+        sudo AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }} java -jar /home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar >> logs &
