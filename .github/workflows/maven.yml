@@ -27,7 +27,7 @@ jobs:
     - name: Test Env
       env:
         MY_SECRET_TEST: ${{ secrets.MY_SECRET_TEST }}
-      run: "$MY_SECRET_TEST"
+      run: echo $MY_SECRET_TEST
     - name: Build with Maven
       env:
         MY_SECRET_TEST: ${{ secrets.MY_SECRET_TEST }}
