@@ -51,3 +51,11 @@ jobs:
         ANNOTATION_TEST_5=${{ secrets.ANNOTATION_TEST_5 }}
         ANNOTATION_TEST_5=${{ vars.VARIABLE_TEST }}
         java -jar /home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar >> logs &
+    - name: Check status
+      run: |
+        if ping -c 1 localhost:8080; then
+         echo "Ping success"
+        else
+          echo "Ping failed. Exiting..."
+          exit 1
+        fi
