@@ -57,5 +57,6 @@ jobs:
          echo "Initialization success"
         else
           echo "Initialization failed. Exiting..."
+          nano /home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/logs
           exit 1
         fi
