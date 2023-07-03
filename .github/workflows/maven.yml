@@ -52,7 +52,7 @@ jobs:
         sudo java -jar /home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar >> logs &
     - name: Check Status
       run: |
-        RESPONSE=$(curl -s -w "%{http_code}" "http://localhost:8080/ping")
+        RESPONSE=$(curl -s -w "%{http_code}" "http://ec2-54-157-44-149.compute-1.amazonaws.com:8080/ping")
         if [[ "$RESPONSE" == "200" ]]; then
           echo "Request succeeded. Continuing the workflow..."
         else
