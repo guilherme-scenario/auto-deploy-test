@@ -50,12 +50,11 @@ jobs:
         echo $MY_SECRET_TEST $AWS_ACCESS_KEY_ID $AWS_SECRET_KEY $AWS_REGION &
         sudo kill -9 `sudo lsof -t -i:8080` &
         sudo java -jar /home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar >> logs &
-        tail -f logs
     - name: Check Status
       run: |
         RESPONSE=$(curl -s -w "%{http_code}" "http://localhost:8080/ping")
         if [ "$RESPONSE" = "200" ]; then
-        echo "API response: $RESPONSE"
+        echo "API response: $RESPONSE" &
         else
         echo "API request failed"
         exit 1
