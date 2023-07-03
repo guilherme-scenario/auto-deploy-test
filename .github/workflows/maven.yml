@@ -44,8 +44,7 @@ jobs:
       run: |
         echo $MY_SECRET_TEST $AWS_ACCESS_KEY_ID $AWS_SECRET_KEY $AWS_REGION &
         sudo kill -9 `sudo lsof -t -i:8080` &
-        sudo \
-        AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }} \
+        sudo AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }} \
         SERVER_PORT=${{ secrets.SERVER_PORT }} \
         ANNOTATION_TEST_1=${{ secrets.ANNOTATION_TEST_1 }} \
         ANNOTATION_TEST_2=${{ secrets.ANNOTATION_TEST_2 }} \
