@@ -38,4 +38,10 @@ jobs:
     - name: Execute Jar File
       env:
         MY_SECRET_TEST: ${{ secrets.MY_SECRET_TEST }}
-      run: sudo kill -9 `sudo lsof -t -i:8080` & sudo java -jar /home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar >> logs &
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
+        AWS_REGION: ${{ secrets.AWS_REGION }}
+      run: |
+        echo $MY_SECRET_TEST $AWS_ACCESS_KEY_ID $AWS_SECRET_KEY $AWS_REGION &
+        sudo kill -9 `sudo lsof -t -i:8080` &
+        sudo java -jar /home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar >> logs &
