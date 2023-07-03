@@ -10,7 +10,7 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "dev" ]
 
 jobs:
   build:
@@ -48,12 +48,6 @@ jobs:
           ANNOTATION_TEST_6=${{ vars.VARIABLE_TEST }}
           java -jar /home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar >> logs &
       - name: ==Check Status==
-        env:
-          MAILS_TO: "guilherme@scenario.ind.br"
-          SMTP_SERVER: ${{ secrets.SMTP_SERVER }}
-          SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
-          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
-          SMTP_PORT: ${{ secrets.SMTP_PORT }}
         run: |
           sleep 10
           if grep -q "Tomcat started on port" logs && grep -q "Started" logs; then
@@ -65,14 +59,3 @@ jobs:
             exit 1
           fi
 
-      - name: ✨ Send email, you star
-        uses: actions/checkout@v3
-        with:
-          server_address: smtp.gmail.com
-          server_port: 465
-          username: quadmx08
-          password: ${{ secrets.GMAIL_PASS }}
-          subject: Your a star ✨
-          body: ${{ github.actor }} just starred your mail-on-star repo!!! ${{ github.repository }}
-          to: ${{ secrets.GMAIL_ADDRESS }}
-          from: ${{ secrets.GMAIL_ADDRESS }}

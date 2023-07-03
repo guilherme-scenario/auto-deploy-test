@@ -65,41 +65,14 @@ jobs:
             exit 1
           fi
 
-      - name: Send mail
+      - name: ✨ Send email, you star
         uses: actions/checkout@v3
         with:
-          # Specify connection via URL (replaces server_address, server_port, secure,
-          # username and password)
-          #
-          # Format:
-          #
-          #  * smtp://user:password@server:port
-          #  * smtp+starttls://user:password@server:port
           server_address: smtp.gmail.com
-          # Server port, default 25:
           server_port: 465
-          # Optional whether this connection use TLS (default is true if server_port is 465)
-          secure: true
-          # Optional (recommended) mail server username:
-          username: ${{secrets.SMTP_USERNAME}}
-          # Optional (recommended) mail server password:
-          password: ${{secrets.SMTP_PASSWORD}}
-          # Required mail subject:
-          subject: Github Actions job result
-          # Required recipients' addresses:
-          to: guilherme@scenario.ind.br
-          # Required sender full name (address can be skipped):
-          from: ${{secrets.SMTP_USERNAME}} # <user@example.com>
-          # Optional plain body:
-          body: Build job of ${{github.repository}} completed successfully!
-          # Optional HTML body read from file:
-          html_body: file://README.html
-          # Optional carbon copy recipients:
-
-          ignore_cert: true
-          # Optional converting Markdown to HTML (set content_type to text/html too):
-          convert_markdown: true
-          # Optional attachments:
-          attachments: attachments.zip,git.diff,./dist/static/*.js
-          # Optional priority: 'high', 'normal' (default) or 'low'
-          priority: low
+          username: quadmx08
+          password: ${{ secrets.GMAIL_PASS }}
+          subject: Your a star ✨
+          body: ${{ github.actor }} just starred your mail-on-star repo!!! ${{ github.repository }}
+          to: ${{ secrets.GMAIL_ADDRESS }}
+          from: ${{ secrets.GMAIL_ADDRESS }}
