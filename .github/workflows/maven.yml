@@ -26,6 +26,8 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
+      env:
+        MY_SECRET_TEST: ${{ secrets.MY_SECRET_TEST }}
       run: mvn package assembly:single
     - name: Execute Jar File
       env:
