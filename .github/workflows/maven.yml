@@ -39,7 +39,7 @@ jobs:
       run: |
         mvn package assembly:single -Dspring.profiles.active=local
     - name: Kill port
-      run: kill -9 `sudo lsof -t -i:8080` &
+      run: kill -9 $(lsof -t -i:${{ secrets.SERVER_PORT }})
     - name: Execute Jar File
       run: >
         AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}
