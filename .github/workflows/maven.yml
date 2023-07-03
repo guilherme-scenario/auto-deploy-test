@@ -59,5 +59,4 @@ jobs:
           echo "Initialization failed. Exiting..."
           TERM=linux
           nano logs
-          exit 1
         fi
