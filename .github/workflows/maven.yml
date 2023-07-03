@@ -17,46 +17,41 @@ jobs:
     runs-on: self-hosted
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up JDK 11
-      uses: actions/setup-java@v3
-      with:
-        java-version: '11'
-        distribution: 'temurin'
-        cache: maven
-    - name: Test Env
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
-        AWS_REGION: ${{ secrets.AWS_REGION }}
-      run: echo $MY_SECRET_TEST $AWS_ACCESS_KEY_ID $AWS_SECRET_KEY $AWS_REGION
-    - name: Build with Maven
-      env:
-        MY_SECRET_TEST: ${{ secrets.MY_SECRET_TEST }}
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
-        AWS_REGION: ${{ secrets.AWS_REGION }}
-      run: |
-        mvn package assembly:single -Dspring.profiles.active=local
-    - name: Kill port
-      run: |
-        if sudo fuser -s 8080/tcp; then
-          echo "Port 8080 is in use. Killing the process..."
-          sudo fuser -k 8080/tcp
-        else
-          exit 0
-        fi
-    - name: Execute Jar File
-      run: >
-        sudo AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}
-        java -jar /home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar >> logs &
-    - name: Check status
-      run: |
-        sleep 10
-        if grep -q "Tomcat started on port" /home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/logs; then
-         echo "Initialization success"
-        else
-          echo "Initialization failed. Exiting..."
-          cat /home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/logs
-          exit 1
-        fi
+      - uses: actions/checkout@v3
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: maven
+      - name: Build with Maven
+        env:
+          MY_SECRET_TEST: ${{ secrets.MY_SECRET_TEST }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+        run: |
+          mvn package assembly:single -Dspring.profiles.active=local
+      - name: Kill port
+        run: |
+          if sudo fuser -s 8080/tcp; then
+            echo "Port 8080 is in use. Killing the process..."
+            sudo fuser -k 8080/tcp
+          else
+            exit 0
+          fi
+      - name: Execute Jar File
+        run: >
+          sudo AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}
+          java -jar /home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar >> logs &
+      - name: Check status
+        run: |
+          sleep 10
+          if grep -q "Tomcat started on port" logs; then
+            echo "Initialization success"
+            cat logs
+          else
+            echo "Initialization failed. Exiting..."
+            cat logs
+            exit 1
+          fi
