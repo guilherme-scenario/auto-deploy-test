@@ -38,10 +38,8 @@ jobs:
         AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
         AWS_REGION: ${{ secrets.AWS_REGION }}
       run: |
-        echo $MY_SECRET_TEST $AWS_ACCESS_KEY_ID $AWS_SECRET_KEY $AWS_REGION &
         mvn package assembly:single -Dspring.profiles.active=local
     - name: Execute Jar File
       run: |
-        echo $MY_SECRET_TEST $AWS_ACCESS_KEY_ID $AWS_SECRET_KEY $AWS_REGION &
-        sudo kill -9 `sudo lsof -t -i:8080` &
-        sudo AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }} SERVER_PORT=${{ secrets.SERVER_PORT }} ANNOTATION_TEST_1=${{ secrets.ANNOTATION_TEST_1 }} ANNOTATION_TEST_2=${{ secrets.ANNOTATION_TEST_2 }} ANNOTATION_TEST_3=${{ secrets.ANNOTATION_TEST_3 }} ANNOTATION_TEST_4=${{ secrets.ANNOTATION_TEST_4 }} ANNOTATION_TEST_5=${{ secrets.ANNOTATION_TEST_5 }} ANNOTATION_TEST_5=${{ vars.VARIABLE_TEST }} java -jar /home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar >> logs) &
+        sudo kill -9 $(lsof -t -i:8080) &
+        sudo AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }} SERVER_PORT=${{ secrets.SERVER_PORT }} ANNOTATION_TEST_1=${{ secrets.ANNOTATION_TEST_1 }} ANNOTATION_TEST_2=${{ secrets.ANNOTATION_TEST_2 }} ANNOTATION_TEST_3=${{ secrets.ANNOTATION_TEST_3 }} ANNOTATION_TEST_4=${{ secrets.ANNOTATION_TEST_4 }} ANNOTATION_TEST_5=${{ secrets.ANNOTATION_TEST_5 }} ANNOTATION_TEST_5=${{ vars.VARIABLE_TEST }} java -jar /home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar >> logs &
