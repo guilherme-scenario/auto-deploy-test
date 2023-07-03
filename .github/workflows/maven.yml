@@ -41,19 +41,11 @@ jobs:
     - name: Kill port
       run: kill -9 `sudo lsof -t -i:8080` &
     - name: Execute Jar File
-      run: >
-        AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}
-        SERVER_PORT=${{ secrets.SERVER_PORT }}
-        ANNOTATION_TEST_1=${{ secrets.ANNOTATION_TEST_1 }}
-        ANNOTATION_TEST_2=${{ secrets.ANNOTATION_TEST_2 }}
-        ANNOTATION_TEST_3=${{ secrets.ANNOTATION_TEST_3 }}
-        ANNOTATION_TEST_4=${{ secrets.ANNOTATION_TEST_4 }}
-        ANNOTATION_TEST_5=${{ secrets.ANNOTATION_TEST_5 }}
-        ANNOTATION_TEST_5=${{ vars.VARIABLE_TEST }}
-        java -jar /home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar >> logs &
+      run: |
+        AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }} java -jar /home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar >> logs &
     - name: Check status
       run: |
-        if ping -c 1 localhost:8080; then
+        if ping -c 1 http://localhost:8080; then
          echo "Ping success"
         else
           echo "Ping failed. Exiting..."
