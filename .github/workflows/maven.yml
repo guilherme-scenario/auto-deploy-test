@@ -43,11 +43,12 @@ jobs:
       - name: Execute Jar File
         run: >
           sudo AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}
+          SERVER_PORT=${{ secrets.SERVER_PORT }}
           java -jar /home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar >> logs &
       - name: Check status
         run: |
           sleep 10
-          if grep -q "Tomcat started on port" logs; then
+          if grep -q "Tomcat started on port" logs && grep -q "StartedActions secrets" logs; then
             echo "Initialization success"
             cat logs
           else
