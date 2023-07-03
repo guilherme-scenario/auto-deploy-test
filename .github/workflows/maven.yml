@@ -14,7 +14,6 @@ on:
 
 jobs:
   build:
-
     runs-on: self-hosted
 
     steps:
@@ -25,6 +24,10 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         cache: maven
+    - name: Test Env
+      env:
+        MY_SECRET_TEST: ${{ secrets.MY_SECRET_TEST }}
+      run: example-command "$env:MY_SECRET_TEST"
     - name: Build with Maven
       env:
         MY_SECRET_TEST: ${{ secrets.MY_SECRET_TEST }}

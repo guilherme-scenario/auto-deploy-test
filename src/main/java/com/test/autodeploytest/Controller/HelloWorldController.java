@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("hello")
 public class HelloWorldController {
 
-    @Value("${test}")
+    @Value("${aws.secretKey}")
     private String envTest;
 
     @GetMapping
