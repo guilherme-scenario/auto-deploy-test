@@ -45,9 +45,10 @@ jobs:
         sudo AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }} java -jar /home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar >> logs &
     - name: Check status
       run: |
-        if ping -c 1 http://localhost:8080; then
-         echo "Ping success"
+        sleep 10
+        if grep -q "Tomcat started on port" /home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/logs; then
+         echo "Initialization success"
         else
-          echo "Ping failed. Exiting..."
+          echo "Initialization failed. Exiting..."
           exit 1
         fi
