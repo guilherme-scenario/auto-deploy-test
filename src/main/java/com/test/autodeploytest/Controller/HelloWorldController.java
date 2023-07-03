@@ -6,15 +6,40 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("hello")
 public class HelloWorldController {
 
+    @Value("${my.annotation.test1=${ANNOTATION_TEST_1}}")
+    private String var1;
+
+    @Value("${my.annotation.test2=${ANNOTATION_TEST_2}}")
+    private String var2;
+
+    @Value("${my.annotation.test3=${ANNOTATION_TEST_3}}")
+    private String var3;
+
+    @Value("${my.annotation.test4=${ANNOTATION_TEST_4}}")
+    private String var4;
+
+    @Value("${my.annotation.test5=${ANNOTATION_TEST_5}}")
+    private String var5;
+
+    @Value("${my.annotation.test6=${ANNOTATION_TEST_6}}")
+    private String var6;
 
     @GetMapping
-    public ResponseEntity<String> helloWorld(@Value("${aws.secretKey}") String envTest) {
+    public ResponseEntity<List<String>> helloWorld(@Value("${aws.secretKey}") String envTest) {
         System.out.println(":::::::::::::::::: Hello");
+        System.out.println(":::::::::::::::::: " + var1);
+        System.out.println(":::::::::::::::::: " + var2);
+        System.out.println(":::::::::::::::::: " + var3);
+        System.out.println(":::::::::::::::::: " + var4);
+        System.out.println(":::::::::::::::::: " + var5);
+        System.out.println(":::::::::::::::::: " + var6);
         System.out.println(":::::::::::::::::: " + envTest);
-        return ResponseEntity.ok("Hello Fuck**g World!\n" + envTest);
+        return ResponseEntity.ok(List.of(var1, var2, var3, var4, var5, var6, envTest));
     }
 }
