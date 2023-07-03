@@ -39,7 +39,7 @@ jobs:
       run: |
         mvn package assembly:single -Dspring.profiles.active=local
     - name: Kill port
-      run: sudo kill -9 `sudo lsof -t -i:8080`
+      run: sudo fuser -k 8080/tcp
     - name: Execute Jar File
       run: |
         sudo AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }} java -jar /home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar >> logs &
