@@ -48,11 +48,29 @@ jobs:
           ANNOTATION_TEST_6=${{ vars.VARIABLE_TEST }}
           java -jar /home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar >> logs &
       - name: ==Check Status==
+        env:
+          MAILS_TO: "guilherme@scenario.ind.br"
+          SMTP_SERVER: ${{ secrets.SMTP_SERVER }}
+          SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
         run: |
           sleep 10
           if grep -q "Tomcat started on port" logs && grep -q "Started" logs; then
             echo "Initialization success"
             cat logs
+          echo "Subject: GitHub Actions Notification" > email.txt
+          echo "The GitHub Actions workflow completed successfully." >> email.txt
+          echo "You can customize this message as needed." >> email.txt
+          swaks \
+            --to $MAILS_TO \
+            --from $SMTP_USERNAME \
+            --server $SMTP_SERVER \
+            --port $SMTP_PORT \
+            --auth-user $SMTP_USERNAME \
+            --auth-password $SMTP_PASSWORD \
+            --tls \
+            --attach email.txt
           else
             echo "Initialization failed. Exiting..."
             cat logs
