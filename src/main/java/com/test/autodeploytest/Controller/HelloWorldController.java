@@ -10,11 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("hello")
 public class HelloWorldController {
 
-    @Value("${aws.secretKey}")
-    private String envTest;
 
     @GetMapping
-    public ResponseEntity<String> helloWorld() {
+    public ResponseEntity<String> helloWorld(@Value("${aws.secretKey}") String envTest) {
         System.out.println(":::::::::::::::::: Hello");
         System.out.println(":::::::::::::::::: " + envTest);
         return ResponseEntity.ok("Hello Fuck**g World!\n" + envTest);
