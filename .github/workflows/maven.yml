@@ -28,13 +28,8 @@ jobs:
     - name: Build with Maven
       env:
         MY_SECRET_TEST: ${{ secrets.MY_SECRET_TEST }}
-      run: |
-        sleep 10
-        mvn package assembly:single
+      run: sleep 10 mvn package assembly:single
     - name: Execute Jar File
       env:
         MY_SECRET_TEST: ${{ secrets.MY_SECRET_TEST }}
-      run: |
-        sudo kill -9 `sudo lsof -t -i:8080`
-        sleep 10
-        sudo java -jar /home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar >> logs &
+      run: sudo kill -9 `sudo lsof -t -i:8080` sleep 10 sudo java -jar /home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar >> logs &
