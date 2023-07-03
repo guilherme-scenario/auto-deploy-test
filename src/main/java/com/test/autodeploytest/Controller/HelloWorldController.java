@@ -12,22 +12,22 @@ import java.util.List;
 @RequestMapping("hello")
 public class HelloWorldController {
 
-    @Value("${my.annotation.test1=${ANNOTATION_TEST_1}}")
+    @Value("${my.annotation.test1}")
     private String var1;
 
-    @Value("${my.annotation.test2=${ANNOTATION_TEST_2}}")
+    @Value("${my.annotation.test2}")
     private String var2;
 
-    @Value("${my.annotation.test3=${ANNOTATION_TEST_3}}")
+    @Value("${my.annotation.test3}")
     private String var3;
 
-    @Value("${my.annotation.test4=${ANNOTATION_TEST_4}}")
+    @Value("${my.annotation.test4}")
     private String var4;
 
-    @Value("${my.annotation.test5=${ANNOTATION_TEST_5}}")
+    @Value("${my.annotation.test5}")
     private String var5;
 
-    @Value("${my.annotation.test6=${ANNOTATION_TEST_6}}")
+    @Value("${my.annotation.test6}}")
     private String var6;
 
     @GetMapping
