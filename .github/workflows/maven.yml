@@ -34,7 +34,12 @@ jobs:
     - name: Build with Maven
       env:
         MY_SECRET_TEST: ${{ secrets.MY_SECRET_TEST }}
-      run: mvn package assembly:single
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
+        AWS_REGION: ${{ secrets.AWS_REGION }}
+      run: |
+        echo $MY_SECRET_TEST $AWS_ACCESS_KEY_ID $AWS_SECRET_KEY $AWS_REGION &
+        mvn package assembly:single
     - name: Execute Jar File
       env:
         MY_SECRET_TEST: ${{ secrets.MY_SECRET_TEST }}
