@@ -50,5 +50,5 @@ jobs:
         echo $MY_SECRET_TEST $AWS_ACCESS_KEY_ID $AWS_SECRET_KEY $AWS_REGION &
         sudo kill -9 `sudo lsof -t -i:8080` &
         sudo \
-          AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }} \
-          java -jar /home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar >> logs &
+        AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }} \
+        java -jar /home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar >> logs &
