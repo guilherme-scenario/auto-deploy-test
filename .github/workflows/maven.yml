@@ -55,7 +55,7 @@ jobs:
       - name: Check status
         run: |
           sleep 10
-          if grep -q "Tomcat started on port" logs && grep -q "StartedActions secrets" logs; then
+          if grep -q "Tomcat started on port" logs && grep -q "Started" logs; then
             echo "Initialization success"
             cat logs
           else
