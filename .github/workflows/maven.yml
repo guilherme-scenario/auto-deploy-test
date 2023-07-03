@@ -41,7 +41,8 @@ jobs:
     - name: Kill port
       run: |
         if sudo fuser -s 8080/tcp; then
-          sudo fuser -s 8080
+          echo "Port 8080 is in use. Killing the process..."
+          sudo fuser -k 8080/tcp
         else
           exit 0
         fi
