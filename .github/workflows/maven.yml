@@ -6,11 +6,11 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Instance 2
+name: Java CI with Maven
 
 on:
   push:
-    branches: [ "dev" ]
+    branches: [ "master" ]
 
 jobs:
   build:
@@ -48,6 +48,12 @@ jobs:
           ANNOTATION_TEST_6=${{ vars.VARIABLE_TEST }}
           java -jar /home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar >> logs &
       - name: ==Check Status==
+        env:
+          MAILS_TO: "guilherme@scenario.ind.br"
+          SMTP_SERVER: ${{ secrets.SMTP_SERVER }}
+          SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
         run: |
           sleep 10
           if grep -q "Tomcat started on port" logs && grep -q "Started" logs; then
@@ -58,18 +64,42 @@ jobs:
             cat logs
             exit 1
           fi
-      - name: Crontab Clear
-        run: echo "" | crontab -
-      - name: Crontab Configuration
-        run: >
-          echo "@reboot
-          AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}
-          SERVER_PORT=${{ secrets.SERVER_PORT }}
-          ANNOTATION_TEST_1=${{ secrets.ANNOTATION_TEST_1 }} 
-          ANNOTATION_TEST_2=${{ secrets.ANNOTATION_TEST_2 }}
-          ANNOTATION_TEST_3=${{ secrets.ANNOTATION_TEST_3 }}
-          ANNOTATION_TEST_4=${{ secrets.ANNOTATION_TEST_4 }}
-          ANNOTATION_TEST_5=${{ secrets.ANNOTATION_TEST_5 }}
-          ANNOTATION_TEST_6=${{ vars.VARIABLE_TEST }}
-          java -jar /home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar >> logs"
-          | crontab -
+
+      - name: Send mail
+        uses: actions/checkout@v3
+        with:
+          # Specify connection via URL (replaces server_address, server_port, secure,
+          # username and password)
+          #
+          # Format:
+          #
+          #  * smtp://user:password@server:port
+          #  * smtp+starttls://user:password@server:port
+          server_address: smtp.gmail.com
+          # Server port, default 25:
+          server_port: 465
+          # Optional whether this connection use TLS (default is true if server_port is 465)
+          secure: true
+          # Optional (recommended) mail server username:
+          username: ${{secrets.SMTP_USERNAME}}
+          # Optional (recommended) mail server password:
+          password: ${{secrets.SMTP_PASSWORD}}
+          # Required mail subject:
+          subject: Github Actions job result
+          # Required recipients' addresses:
+          to: guilherme@scenario.ind.br
+          # Required sender full name (address can be skipped):
+          from: ${{secrets.SMTP_USERNAME}} # <user@example.com>
+          # Optional plain body:
+          body: Build job of ${{github.repository}} completed successfully!
+          # Optional HTML body read from file:
+          html_body: file://README.html
+          # Optional carbon copy recipients:
+
+          ignore_cert: true
+          # Optional converting Markdown to HTML (set content_type to text/html too):
+          convert_markdown: true
+          # Optional attachments:
+          attachments: attachments.zip,git.diff,./dist/static/*.js
+          # Optional priority: 'high', 'normal' (default) or 'low'
+          priority: low
