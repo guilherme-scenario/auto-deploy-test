@@ -15,7 +15,7 @@ on:
 jobs:
   build-runner1:
     runs-on: runner_1
-    name: ${{ github.ref == 'refs/heads/dev' && 'Instance 2' || 'Ignored' }}
+    name: Instance 1
     if: github.ref == 'refs/heads/master'
 
     steps:
@@ -78,7 +78,7 @@ jobs:
 
   build-runner2:
     runs-on: runner_2
-    name: ${{ github.ref == 'refs/heads/dev' && 'Instance 2' || 'Ignored' }}
+    name: Instance 2
     if: github.ref == 'refs/heads/dev'
 
     steps:
