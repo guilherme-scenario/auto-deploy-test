@@ -60,7 +60,7 @@ jobs:
           fi
       - name: Crontab Configuration
         run: |
-          echo "" | crontab -e
+          echo "" | crontab -
           echo "@reboot AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }} \
           SERVER_PORT=${{ secrets.SERVER_PORT }} \
           ANNOTATION_TEST_1=${{ secrets.ANNOTATION_TEST_1 }} \
