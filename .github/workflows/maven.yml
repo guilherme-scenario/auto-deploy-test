@@ -14,7 +14,7 @@ on:
 
 jobs:
   build-runner1:
-    runs-on: runner_0
+    runs-on: runner_1
 
     strategy:
       matrix:
@@ -30,7 +30,7 @@ jobs:
           | crontab -
 
   build-runner2:
-    runs-on: self-hosted
+    runs-on: runner_1
 
     strategy:
       matrix:
