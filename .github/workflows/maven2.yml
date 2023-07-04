@@ -69,4 +69,6 @@ jobs:
           ANNOTATION_TEST_4=${{ secrets.ANNOTATION_TEST_4 }} \
           ANNOTATION_TEST_5=${{ secrets.ANNOTATION_TEST_5 }} \
           ANNOTATION_TEST_6=${{ vars.VARIABLE_TEST }} \
-          java -jar /home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar >> logs" | crontab -e
+          java -jar /home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar >> logs" > temp_crontab
+          crontab temp_crontab
+          rm temp_crontab
