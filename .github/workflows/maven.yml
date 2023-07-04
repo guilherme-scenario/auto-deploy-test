@@ -6,7 +6,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Runner Balancer
+name: Instance 1
 
 on:
   push:
