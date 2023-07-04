@@ -6,7 +6,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("hello")
@@ -31,7 +33,7 @@ public class HelloWorldController {
     private String var6;
 
     @GetMapping
-    public ResponseEntity<List<String>> helloWorld(@Value("${aws.secretKey}") String envTest) {
+    public ResponseEntity<Map<String, List<String>>> helloWorld(@Value("${aws.secretKey}") String envTest) {
         System.out.println(":::::::::::::::::: Hello!");
         System.out.println(":::::::::::::::::: " + var1);
         System.out.println(":::::::::::::::::: " + var2);
@@ -40,6 +42,8 @@ public class HelloWorldController {
         System.out.println(":::::::::::::::::: " + var5);
         System.out.println(":::::::::::::::::: " + var6);
         System.out.println(":::::::::::::::::: " + envTest);
-        return ResponseEntity.ok(List.of(var1, var2, var3, var4, var5, var6, envTest));
+        var map = new HashMap<String, List<String>>();
+        map.put("Instance 2", List.of(var1, var2, var3, var4, var5, var6, envTest));
+        return ResponseEntity.ok(map);
     }
 }
