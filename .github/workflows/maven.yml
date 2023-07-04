@@ -17,10 +17,6 @@ jobs:
     runs-on: runner_2
     if: github.ref == 'refs/heads/master'
 
-    strategy:
-      matrix:
-        runner: [ runner_2 ]
-
     steps:
       - name: Crontab Clear
         run: echo "" | crontab -
@@ -33,10 +29,6 @@ jobs:
   build-runner2:
     runs-on: runner_1
     if: github.ref == 'refs/heads/dev'
-
-    strategy:
-      matrix:
-        runner: [ runner_1 ]
 
     steps:
       - uses: actions/checkout@v3
