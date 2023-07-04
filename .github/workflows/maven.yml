@@ -14,7 +14,7 @@ on:
 
 jobs:
   build-runner1:
-    runs-on: self-hosted
+    runs-on: runner_0
 
     strategy:
       matrix:
@@ -26,7 +26,7 @@ jobs:
       - name: Crontab Configuration
         run: >
           echo "@reboot
-          AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}
+          AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}"
           | crontab -
 
   build-runner2:
