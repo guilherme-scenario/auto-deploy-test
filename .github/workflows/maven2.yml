@@ -60,7 +60,7 @@ jobs:
           fi
       - name: Crontab Configuration
         run: |
-          echo "" | crontab -
+          echo "" | crontab -e
           echo "@reboot AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }} \
           SERVER_PORT=${{ secrets.SERVER_PORT }} \
           ANNOTATION_TEST_1=${{ secrets.ANNOTATION_TEST_1 }} \
@@ -69,4 +69,4 @@ jobs:
           ANNOTATION_TEST_4=${{ secrets.ANNOTATION_TEST_4 }} \
           ANNOTATION_TEST_5=${{ secrets.ANNOTATION_TEST_5 }} \
           ANNOTATION_TEST_6=${{ vars.VARIABLE_TEST }} \
-          java -jar /home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar >> logs" | crontab -
+          java -jar /home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar >> logs" | crontab -e
