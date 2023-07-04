@@ -13,8 +13,28 @@ on:
     branches: [ "master" ]
 
 jobs:
-  build:
+  build-runner1:
     runs-on: self-hosted
+
+    strategy:
+      matrix:
+        runner: [runner_0]
+
+    steps:
+      - name: Crontab Clear
+        run: echo "" | crontab -
+      - name: Crontab Configuration
+        run: >
+          echo "@reboot
+          AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}
+          | crontab -
+
+  build-runner2:
+    runs-on: self-hosted
+
+    strategy:
+      matrix:
+        runner: [ runner_1 ]
 
     steps:
       - uses: actions/checkout@v3
