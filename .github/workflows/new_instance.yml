@@ -10,7 +10,7 @@ name: New Instance Test
 
 on:
   push:
-    branches: [ "dev" ]
+    branches: [ "new_instance" ]
 
 jobs:
   build:
