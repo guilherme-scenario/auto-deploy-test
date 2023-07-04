@@ -43,7 +43,7 @@ public class HelloWorldController {
         System.out.println(":::::::::::::::::: " + var6);
         System.out.println(":::::::::::::::::: " + envTest);
         var map = new HashMap<String, List<String>>();
-        map.put("Instance 1_____****", List.of(var1, var2, var3, var4, var5, var6, envTest));
+        map.put("Instance 1 MASTEEEEER", List.of(var1, var2, var3, var4, var5, var6, envTest));
         return ResponseEntity.ok(map);
     }
 }

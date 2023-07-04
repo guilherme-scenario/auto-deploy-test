@@ -10,15 +10,12 @@ name: Instance 1
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "master", "dev" ]
 
 jobs:
   build-runner1:
     runs-on: runner_2
-
-    strategy:
-      matrix:
-        runner: [runner_2]
+    if: github.ref == 'refs/heads/master'
 
     steps:
       - name: Crontab Clear
@@ -30,11 +27,7 @@ jobs:
           | crontab -
 
   build-runner2:
-    runs-on: runner_1
-
-    strategy:
-      matrix:
-        runner: [ runner_1 ]
+    runs-on: ${{ if github.ref == 'refs/heads/dev' }} runner_1 elseif github.ref == 'refs/heads/master' runner_2 elseif github.event.repository.name == 'local' runner_3 endif
 
     steps:
       - uses: actions/checkout@v3
