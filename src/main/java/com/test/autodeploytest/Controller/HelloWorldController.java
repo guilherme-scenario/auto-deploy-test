@@ -34,6 +34,7 @@ public class HelloWorldController {
 
     @GetMapping
     public ResponseEntity<Map<String, List<String>>> helloWorld(@Value("${aws.secretKey}") String envTest) {
+
         System.out.println(":::::::::::::::::: Hello!");
         System.out.println(":::::::::::::::::: " + var1);
         System.out.println(":::::::::::::::::: " + var2);
