@@ -14,11 +14,11 @@ on:
 
 jobs:
   build-runner1:
-    runs-on: runner_1
+    runs-on: runner_2
 
     strategy:
       matrix:
-        runner: [runner_0]
+        runner: [runner_2]
 
     steps:
       - name: Crontab Clear
