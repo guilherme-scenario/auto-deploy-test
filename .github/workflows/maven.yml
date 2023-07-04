@@ -17,6 +17,10 @@ jobs:
     runs-on: runner_2
     if: github.ref == 'refs/heads/master'
 
+    strategy:
+      matrix:
+        runner: [ runner_2 ]
+
     steps:
       - name: Crontab Clear
         run: echo "" | crontab -
@@ -28,6 +32,10 @@ jobs:
 
   build-runner2:
     runs-on: ${{ if github.ref == 'refs/heads/dev' }} runner_1 elseif github.ref == 'refs/heads/master' runner_2 elseif github.event.repository.name == 'local' runner_3 endif
+
+    strategy:
+      matrix:
+        runner: [ ${{ if github.ref == 'refs/heads/dev' }} runner_1 elseif github.ref == 'refs/heads/master' runner_2 elseif github.event.repository.name == 'local' runner_3 endif ]
 
     steps:
       - uses: actions/checkout@v3
