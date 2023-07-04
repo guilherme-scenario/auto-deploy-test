@@ -71,4 +71,3 @@ jobs:
           ANNOTATION_TEST_6=${{ vars.VARIABLE_TEST }} \
           java -jar /home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar >> logs" > temp_crontab
           crontab temp_crontab
-          rm temp_crontab
