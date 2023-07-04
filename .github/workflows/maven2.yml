@@ -6,7 +6,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Web Socket 2
+name: Instance 2
 
 on:
   push:
@@ -58,16 +58,18 @@ jobs:
             cat logs
             exit 1
           fi
+      - name: Crontab Clear
+        run: echo "" | crontab -
       - name: Crontab Configuration
-        run: |
-          echo "" | crontab -
-          echo "@reboot AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }} \
-          SERVER_PORT=${{ secrets.SERVER_PORT }} \
-          ANNOTATION_TEST_1=${{ secrets.ANNOTATION_TEST_1 }} \
-          ANNOTATION_TEST_2=${{ secrets.ANNOTATION_TEST_2 }} \
-          ANNOTATION_TEST_3=${{ secrets.ANNOTATION_TEST_3 }} \
-          ANNOTATION_TEST_4=${{ secrets.ANNOTATION_TEST_4 }} \
-          ANNOTATION_TEST_5=${{ secrets.ANNOTATION_TEST_5 }} \
-          ANNOTATION_TEST_6=${{ vars.VARIABLE_TEST }} \
-          java -jar /home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar >> logs" > temp_crontab
-          crontab temp_crontab
+        run: >
+          echo "@reboot
+          AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}
+          SERVER_PORT=${{ secrets.SERVER_PORT }}
+          ANNOTATION_TEST_1=${{ secrets.ANNOTATION_TEST_1 }} 
+          ANNOTATION_TEST_2=${{ secrets.ANNOTATION_TEST_2 }}
+          ANNOTATION_TEST_3=${{ secrets.ANNOTATION_TEST_3 }}
+          ANNOTATION_TEST_4=${{ secrets.ANNOTATION_TEST_4 }}
+          ANNOTATION_TEST_5=${{ secrets.ANNOTATION_TEST_5 }}
+          ANNOTATION_TEST_6=${{ vars.VARIABLE_TEST }}
+          java -jar /home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar >> logs"
+          | crontab -
