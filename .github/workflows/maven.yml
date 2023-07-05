@@ -7,7 +7,7 @@ on:
 jobs:
   build-runner:
     runs-on: runner_2
-    name: ${{ if github.ref == 'refs/heads/dev' && contains(github.event.head_commit.message, 'start-deploy') }}Instance 2 (Condition Met)${{ else }}Instance 2${{ end }}
+    name: ${{ if github.ref == 'refs/heads/dev' }}Instance 2${{ else }}Ignored${{ endif }}
     if: github.ref == 'refs/heads/dev' && contains(github.event.head_commit.message, 'start-deploy')
 
 
