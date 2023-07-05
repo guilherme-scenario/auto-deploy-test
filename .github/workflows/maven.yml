@@ -18,17 +18,10 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
           cache: maven
+
       - name: Build with Maven
         run: >
           mvn package assembly:single
-          -DAWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}
-          -DSERVER_PORT=${{ secrets.SERVER_PORT }}
-          -DANNOTATION_TEST_1=${{ secrets.ANNOTATION_TEST_1 }} 
-          -DANNOTATION_TEST_2=${{ secrets.ANNOTATION_TEST_2 }}
-          -DANNOTATION_TEST_3=${{ secrets.ANNOTATION_TEST_3 }}
-          -DANNOTATION_TEST_4=${{ secrets.ANNOTATION_TEST_4 }}
-          -DANNOTATION_TEST_5=${{ secrets.ANNOTATION_TEST_5 }}
-          -DANNOTATION_TEST_6=${{ vars.VARIABLE_TEST }}
 
       - name: Kill Port
         run: |
@@ -38,6 +31,7 @@ jobs:
           else
             exit 0
           fi
+
       - name: Execute Jar File
         run: >
           sudo
@@ -50,6 +44,7 @@ jobs:
           ANNOTATION_TEST_5=${{ secrets.ANNOTATION_TEST_5 }}
           ANNOTATION_TEST_6=${{ vars.VARIABLE_TEST }}
           java -jar /home/ec2-user/actions-runner/_work_0/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar >> logs &
+
       - name: ==Check Status==
         run: |
           sleep 10
@@ -61,8 +56,10 @@ jobs:
             cat logs
             exit 1
           fi
+
       - name: Crontab Clear
         run: echo "" | crontab -
+
       - name: Crontab Configuration
         run: >
           echo "@reboot
