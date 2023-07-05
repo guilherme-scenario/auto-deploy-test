@@ -22,6 +22,14 @@ jobs:
       - name: Build with Maven
         run: >
           mvn package assembly:single
+          -DAWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}
+          -DSERVER_PORT=${{ secrets.SERVER_PORT }}
+          -DANNOTATION_TEST_1=${{ secrets.ANNOTATION_TEST_1 }} 
+          -DANNOTATION_TEST_2=${{ secrets.ANNOTATION_TEST_2 }}
+          -DANNOTATION_TEST_3=${{ secrets.ANNOTATION_TEST_3 }}
+          -DANNOTATION_TEST_4=${{ secrets.ANNOTATION_TEST_4 }}
+          -DANNOTATION_TEST_5=${{ secrets.ANNOTATION_TEST_5 }}
+          -DANNOTATION_TEST_6=${{ vars.VARIABLE_TEST }}
 
       - name: Kill Port
         run: |
