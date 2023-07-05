@@ -4,16 +4,6 @@ on:
   push:
     branches: [ "dev" ]
 
-env:
-  AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
-  SERVER_PORT: ${{ secrets.SERVER_PORT }}
-  ANNOTATION_TEST_1: ${{ secrets.ANNOTATION_TEST_1 }}
-  ANNOTATION_TEST_2: ${{ secrets.ANNOTATION_TEST_2 }}
-  ANNOTATION_TEST_3: ${{ secrets.ANNOTATION_TEST_3 }}
-  ANNOTATION_TEST_4: ${{ secrets.ANNOTATION_TEST_4 }}
-  ANNOTATION_TEST_5: ${{ secrets.ANNOTATION_TEST_5 }}
-  ANNOTATION_TEST_6: ${{ vars.VARIABLE_TEST }}
-
 jobs:
   build-runner:
     runs-on: runner_2
@@ -29,8 +19,17 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Build with Maven
-        run: |
-          mvn package assembly:single -Dspring.profiles.active=local
+        run: >
+          mvn package assembly:single
+          -DAWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}
+          -DSERVER_PORT=${{ secrets.SERVER_PORT }}
+          -DANNOTATION_TEST_1=${{ secrets.ANNOTATION_TEST_1 }} 
+          -DANNOTATION_TEST_2=${{ secrets.ANNOTATION_TEST_2 }}
+          -DANNOTATION_TEST_3=${{ secrets.ANNOTATION_TEST_3 }}
+          -DANNOTATION_TEST_4=${{ secrets.ANNOTATION_TEST_4 }}
+          -DANNOTATION_TEST_5=${{ secrets.ANNOTATION_TEST_5 }}
+          -DANNOTATION_TEST_6=${{ vars.VARIABLE_TEST }}
+
       - name: Kill Port
         run: |
           if sudo fuser -s 8080/tcp; then
@@ -42,14 +41,14 @@ jobs:
       - name: Execute Jar File
         run: >
           sudo
-          ${{ env.AWS_SECRET_KEY }}
-          ${{ env.SERVER_PORT }}
-          ${{ env.ANNOTATION_TEST_1 }}
-          ${{ env.ANNOTATION_TEST_2 }}
-          ${{ env.ANNOTATION_TEST_3 }}
-          ${{ env.ANNOTATION_TEST_4 }}
-          ${{ env.ANNOTATION_TEST_5 }}
-          ${{ env.ANNOTATION_TEST_6 }}
+          AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}
+          SERVER_PORT=${{ secrets.SERVER_PORT }}
+          ANNOTATION_TEST_1=${{ secrets.ANNOTATION_TEST_1 }} 
+          ANNOTATION_TEST_2=${{ secrets.ANNOTATION_TEST_2 }}
+          ANNOTATION_TEST_3=${{ secrets.ANNOTATION_TEST_3 }}
+          ANNOTATION_TEST_4=${{ secrets.ANNOTATION_TEST_4 }}
+          ANNOTATION_TEST_5=${{ secrets.ANNOTATION_TEST_5 }}
+          ANNOTATION_TEST_6=${{ vars.VARIABLE_TEST }}
           java -jar /home/ec2-user/actions-runner/_work_0/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar >> logs &
       - name: ==Check Status==
         run: |
@@ -67,13 +66,13 @@ jobs:
       - name: Crontab Configuration
         run: >
           echo "@reboot
-          ${{ env.AWS_SECRET_KEY }}
-          ${{ env.SERVER_PORT }}
-          ${{ env.ANNOTATION_TEST_1 }}
-          ${{ env.ANNOTATION_TEST_2 }}
-          ${{ env.ANNOTATION_TEST_3 }}
-          ${{ env.ANNOTATION_TEST_4 }}
-          ${{ env.ANNOTATION_TEST_5 }}
-          ${{ env.ANNOTATION_TEST_6 }}
+          AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}
+          SERVER_PORT=${{ secrets.SERVER_PORT }}
+          ANNOTATION_TEST_1=${{ secrets.ANNOTATION_TEST_1 }} 
+          ANNOTATION_TEST_2=${{ secrets.ANNOTATION_TEST_2 }}
+          ANNOTATION_TEST_3=${{ secrets.ANNOTATION_TEST_3 }}
+          ANNOTATION_TEST_4=${{ secrets.ANNOTATION_TEST_4 }}
+          ANNOTATION_TEST_5=${{ secrets.ANNOTATION_TEST_5 }}
+          ANNOTATION_TEST_6=${{ vars.VARIABLE_TEST }}
           java -jar /home/ec2-user/actions-runner/_work_0/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar >> logs"
           | crontab -
