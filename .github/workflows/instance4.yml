@@ -1,0 +1,91 @@
+# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Instance 4
+
+on:
+  push:
+    branches: [ "master" ]
+
+jobs:
+  build-runner:
+    runs-on: runner_4
+    name: Instance 4
+    if: github.ref == 'refs/heads/master'
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build with Maven
+        run: >
+          mvn package assembly:single
+          -DAWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}
+          -DSERVER_PORT=${{ secrets.SERVER_PORT }}
+          -DANNOTATION_TEST_1=${{ secrets.ANNOTATION_TEST_1 }} 
+          -DANNOTATION_TEST_2=${{ secrets.ANNOTATION_TEST_2 }}
+          -DANNOTATION_TEST_3=${{ secrets.ANNOTATION_TEST_3 }}
+          -DANNOTATION_TEST_4=${{ secrets.ANNOTATION_TEST_4 }}
+          -DANNOTATION_TEST_5=${{ secrets.ANNOTATION_TEST_5 }}
+          -DANNOTATION_TEST_6=${{ vars.VARIABLE_TEST }}
+
+      - name: Kill Port
+        run: |
+          if sudo fuser -s 8080/tcp; then
+            echo "Port 8080 is in use. Killing the process..."
+            sudo fuser -k 8080/tcp
+          else
+            exit 0
+          fi
+
+      - name: Execute Jar File
+        run: >
+          sudo
+          AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}
+          SERVER_PORT=${{ secrets.SERVER_PORT }}
+          ANNOTATION_TEST_1=${{ secrets.ANNOTATION_TEST_1 }} 
+          ANNOTATION_TEST_2=${{ secrets.ANNOTATION_TEST_2 }}
+          ANNOTATION_TEST_3=${{ secrets.ANNOTATION_TEST_3 }}
+          ANNOTATION_TEST_4=${{ secrets.ANNOTATION_TEST_4 }}
+          ANNOTATION_TEST_5=${{ secrets.ANNOTATION_TEST_5 }}
+          ANNOTATION_TEST_6=${{ vars.VARIABLE_TEST }}
+          java -jar /home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar >> logs &
+
+      - name: ==Check Status==
+        run: |
+          sleep 10
+          if grep -q "Tomcat started on port" logs && grep -q "Started" logs; then
+            echo "Initialization success"
+            cat logs
+          else
+            echo "Initialization failed. Exiting..."
+            cat logs
+            exit 1
+          fi
+
+      - name: Crontab Clear
+        run: echo "" | crontab -
+
+      - name: Crontab Configuration
+        run: >
+          echo "@reboot
+          AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}
+          SERVER_PORT=${{ secrets.SERVER_PORT }}
+          ANNOTATION_TEST_1=${{ secrets.ANNOTATION_TEST_1 }} 
+          ANNOTATION_TEST_2=${{ secrets.ANNOTATION_TEST_2 }}
+          ANNOTATION_TEST_3=${{ secrets.ANNOTATION_TEST_3 }}
+          ANNOTATION_TEST_4=${{ secrets.ANNOTATION_TEST_4 }}
+          ANNOTATION_TEST_5=${{ secrets.ANNOTATION_TEST_5 }}
+          ANNOTATION_TEST_6=${{ vars.VARIABLE_TEST }}
+          java -jar /home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar >> logs"
+          | crontab -
