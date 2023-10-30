@@ -59,7 +59,7 @@ jobs:
           ANNOTATION_TEST_4=${{ secrets.ANNOTATION_TEST_4 }}
           ANNOTATION_TEST_5=${{ secrets.ANNOTATION_TEST_5 }}
           ANNOTATION_TEST_6=${{ vars.VARIABLE_TEST }}
-          java -jar /home/ec2-user/actions-runner/_work_0/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar >> logs &
+          java -jar /home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar >> logs &
 
       - name: ==Check Status==
         run: |
@@ -87,5 +87,5 @@ jobs:
           ANNOTATION_TEST_4=${{ secrets.ANNOTATION_TEST_4 }}
           ANNOTATION_TEST_5=${{ secrets.ANNOTATION_TEST_5 }}
           ANNOTATION_TEST_6=${{ vars.VARIABLE_TEST }}
-          java -jar /home/ec2-user/actions-runner/_work_0/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar >> logs"
+          java -jar /home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar >> logs"
           | crontab -
