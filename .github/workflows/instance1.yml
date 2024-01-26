@@ -52,7 +52,7 @@ jobs:
         run: >
           sudo
           AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}
-          SERVER_PORT=${{ secrets.SERVER_PORT }}
+          SERVER_PORT=${{ vars.VARIABLE_PORT_SERVER }}
           ANNOTATION_TEST_1=${{ secrets.ANNOTATION_TEST_1 }} 
           ANNOTATION_TEST_2=${{ secrets.ANNOTATION_TEST_2 }}
           ANNOTATION_TEST_3=${{ secrets.ANNOTATION_TEST_3 }}
