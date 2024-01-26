@@ -16,7 +16,7 @@ jobs:
   build-runner:
     defaults:
       run:
-        working-directory: home
+        working-directory: /home
     runs-on: runner_new
     name: Instance 1
     if: github.ref == 'refs/heads/master'
