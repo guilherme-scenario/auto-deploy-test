@@ -14,6 +14,9 @@ on:
 
 jobs:
   build-runner:
+    defaults:
+      run:
+        working-directory: app
     runs-on: runner_new
     name: Instance 1
     if: github.ref == 'refs/heads/master'
