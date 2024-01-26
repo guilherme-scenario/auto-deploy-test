@@ -28,7 +28,7 @@ jobs:
           cache: maven
 
       - name: Create /app directory
-        run: mkdir -p /app
+        run: sudo mkdir -p /app
 
       - name: Build with Maven
         run: >
