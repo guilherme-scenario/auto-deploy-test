@@ -30,6 +30,9 @@ jobs:
       - name: Create /app directory
         run: sudo mkdir -p /app
 
+      - name: Change to /app directory
+        run: cd /app
+
       - name: Build with Maven
         run: >
           mvn package assembly:single
