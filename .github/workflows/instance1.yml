@@ -35,6 +35,7 @@ jobs:
 
       - name: Build with Maven
         run: >
+          cd ./app >>
           mvn package assembly:single
           -DAWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}
           -DSERVER_PORT=${{ secrets.SERVER_PORT }}
@@ -44,7 +45,6 @@ jobs:
           -DANNOTATION_TEST_4=${{ secrets.ANNOTATION_TEST_4 }}
           -DANNOTATION_TEST_5=${{ secrets.ANNOTATION_TEST_5 }}
           -DANNOTATION_TEST_6=${{ vars.VARIABLE_TEST }}
-          -Dmaven.buildDirectory=/app
 
       - name: Kill Port
         run: |
