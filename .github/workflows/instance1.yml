@@ -31,7 +31,7 @@ jobs:
         run: >
           mvn package assembly:single
           -DAWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}
-          -DSERVER_PORT=${{ secrets.SERVER_PORT }}
+          -DSERVER_PORT=${{ vars.SERVER_PORT }}
           -DANNOTATION_TEST_1=${{ secrets.ANNOTATION_TEST_1 }} 
           -DANNOTATION_TEST_2=${{ secrets.ANNOTATION_TEST_2 }}
           -DANNOTATION_TEST_3=${{ secrets.ANNOTATION_TEST_3 }}
@@ -41,9 +41,9 @@ jobs:
 
       - name: Kill Port
         run: |
-          if sudo fuser -s 8080/tcp; then
+          if sudo fuser -s ${{ vars.SERVER_PORT }}/tcp; then
             echo "Port 8080 is in use. Killing the process..."
-            sudo fuser -k 8080/tcp
+            sudo fuser -k ${{ vars.SERVER_PORT }}/tcp
           else
             exit 0
           fi
@@ -80,7 +80,7 @@ jobs:
         run: >
           echo "@reboot
           AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}
-          SERVER_PORT=${{ secrets.SERVER_PORT }}
+          SERVER_PORT=${{ vars.SERVER_PORT }}
           ANNOTATION_TEST_1=${{ secrets.ANNOTATION_TEST_1 }} 
           ANNOTATION_TEST_2=${{ secrets.ANNOTATION_TEST_2 }}
           ANNOTATION_TEST_3=${{ secrets.ANNOTATION_TEST_3 }}
