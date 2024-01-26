@@ -14,9 +14,6 @@ on:
 
 jobs:
   build-runner:
-    defaults:
-      run:
-        working-directory: /home
     runs-on: runner_new
     name: Instance 1
     if: github.ref == 'refs/heads/master'
@@ -29,12 +26,6 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
           cache: maven
-
-      - name: Create /app directory
-        run: sudo mkdir -p /app
-
-      - name: Change to /app directory
-        run: cd /app
 
       - name: Build with Maven
         run: >
@@ -68,7 +59,7 @@ jobs:
           ANNOTATION_TEST_4=${{ secrets.ANNOTATION_TEST_4 }}
           ANNOTATION_TEST_5=${{ secrets.ANNOTATION_TEST_5 }}
           ANNOTATION_TEST_6=${{ vars.VARIABLE_TEST }}
-          java -jar /app/auto-deploy-test/target/auto-deploy.jar >> logs &
+          java -jar /home/ubuntu/actions-runner/_work/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar >> logs &
 
       - name: ==Check Status==
         run: |
