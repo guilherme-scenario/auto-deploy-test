@@ -20,6 +20,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: maven
 
       - name: Build with Maven
         run: >
@@ -38,7 +44,7 @@ jobs:
 
       - name: Execute Jar File
         run: >
-          JAR_PATH=$(sudo pwd) &&
+          JAR_PATH=$(pwd) &&
           AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}
           SERVER_PORT=${{ vars.VARIABLE_PORT_SERVER }}
           ANNOTATION_TEST_1=${{ secrets.ANNOTATION_TEST_1 }}
@@ -52,7 +58,7 @@ jobs:
       - name: Logs
         run: |
           sleep 15 &&
-          sudo cat logs
+          cat logs
 
 
       - name: Check Status
@@ -73,7 +79,7 @@ jobs:
 
       - name: Crontab Configuration
         run: >
-          JAR_PATH=$(sudo pwd) &&
+          JAR_PATH=$(pwd) &&
           echo "@reboot
           AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}
           SERVER_PORT=${{ vars.VARIABLE_PORT_SERVER }}
@@ -83,5 +89,5 @@ jobs:
           ANNOTATION_TEST_4=${{ secrets.ANNOTATION_TEST_4 }}
           ANNOTATION_TEST_5=${{ secrets.ANNOTATION_TEST_5 }}
           ANNOTATION_TEST_6=${{ vars.VARIABLE_TEST }}
-          java -jar "$JAR_PATH"/target/auto-deploy.jar >> logs" &
+          java -jar "$JAR_PATH"/target/auto-deploy.jar >> logs"
           | crontab -
