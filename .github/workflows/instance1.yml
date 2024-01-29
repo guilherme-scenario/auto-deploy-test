@@ -54,14 +54,13 @@ jobs:
           java -jar "$JAR_PATH"/target/auto-deploy.jar >> logs &
 
       - name: Check Status
-        run: |
-          response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8080/ping)
-          if [ "$response" = "200" ]; then
-            echo "Server is running."
-          else
-            echo "Server not available!"
-            exit 1
-          fi
+        run: >
+          response=$(curl -s -o /dev/null -w "%{http_code}"
+          http://localhost:8080/ping) &&
+          if [ "$response" = "200" ];
+          then echo "O servidor está respondendo corretamente.";
+          else echo "O servidor não está respondendo corretamente.
+          Status: $response"; exit 1; fi
 
       - name: Crontab Clear
         run: >
