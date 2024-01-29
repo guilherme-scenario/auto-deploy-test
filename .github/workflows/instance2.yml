@@ -6,86 +6,80 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Instance 2
+name: Instance 1
 
 on:
   push:
-    branches: [ "beta" ]
+    branches: [ "master" ]
 
 jobs:
   build-runner:
-    runs-on: runner_2
-    name: Instance 2
-    if: github.ref == 'refs/heads/beta'
+    runs-on: runner_new
+    name: Instance 1
+    if: github.ref == 'refs/heads/master'
 
     steps:
       - uses: actions/checkout@v3
-      - name: Set up JDK 11
-        uses: actions/setup-java@v3
-        with:
-          java-version: '11'
-          distribution: 'temurin'
-          cache: maven
 
       - name: Build with Maven
         run: >
-          mvn package assembly:single
-          -DAWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}
-          -DSERVER_PORT=${{ secrets.SERVER_PORT }}
-          -DANNOTATION_TEST_1=${{ secrets.ANNOTATION_TEST_1 }} 
-          -DANNOTATION_TEST_2=${{ secrets.ANNOTATION_TEST_2 }}
-          -DANNOTATION_TEST_3=${{ secrets.ANNOTATION_TEST_3 }}
-          -DANNOTATION_TEST_4=${{ secrets.ANNOTATION_TEST_4 }}
-          -DANNOTATION_TEST_5=${{ secrets.ANNOTATION_TEST_5 }}
-          -DANNOTATION_TEST_6=${{ vars.VARIABLE_TEST }}
+          mvn package assembly:single -DskipTests=true
 
       - name: Kill Port
         run: |
-          if sudo fuser -s 8080/tcp; then
+          if sudo fuser -s ${{ vars.VARIABLE_PORT_SERVER }}/tcp; then
             echo "Port 8080 is in use. Killing the process..."
-            sudo fuser -k 8080/tcp
+            sudo fuser -k ${{ vars.VARIABLE_PORT_SERVER }}/tcp
           else
             exit 0
           fi
 
       - name: Execute Jar File
         run: >
-          sudo
+          JAR_PATH=$(pwd) &&
           AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}
-          SERVER_PORT=${{ secrets.SERVER_PORT }}
-          ANNOTATION_TEST_1=${{ secrets.ANNOTATION_TEST_1 }} 
+          SERVER_PORT=${{ vars.VARIABLE_PORT_SERVER }}
+          ANNOTATION_TEST_1=${{ secrets.ANNOTATION_TEST_1 }}
           ANNOTATION_TEST_2=${{ secrets.ANNOTATION_TEST_2 }}
           ANNOTATION_TEST_3=${{ secrets.ANNOTATION_TEST_3 }}
           ANNOTATION_TEST_4=${{ secrets.ANNOTATION_TEST_4 }}
           ANNOTATION_TEST_5=${{ secrets.ANNOTATION_TEST_5 }}
           ANNOTATION_TEST_6=${{ vars.VARIABLE_TEST }}
-          java -jar /home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar >> logs &
+          java -jar "$JAR_PATH"/target/auto-deploy.jar >> logs &
 
-      - name: ==Check Status==
+      - name: Logs
         run: |
-          sleep 10
-          if grep -q "Tomcat started on port" logs && grep -q "Started" logs; then
-            echo "Initialization success"
-            cat logs
+          sleep 15 &&
+          cat logs
+
+
+      - name: Check Status
+        run: |
+          response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:${{ vars.VARIABLE_PORT_SERVER }}/ping) &&
+          if [ "$response" = "200" ]; then
+            echo "Server is running."
           else
-            echo "Initialization failed. Exiting..."
-            cat logs
+            echo "Server not available! Status: $response" &&
+            nano logs
             exit 1
           fi
 
+
       - name: Crontab Clear
-        run: echo "" | crontab -
+        run: >
+          echo "" | crontab -
 
       - name: Crontab Configuration
         run: >
+          JAR_PATH=$(pwd) &&
           echo "@reboot
           AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}
-          SERVER_PORT=${{ secrets.SERVER_PORT }}
+          SERVER_PORT=${{ vars.VARIABLE_PORT_SERVER }}
           ANNOTATION_TEST_1=${{ secrets.ANNOTATION_TEST_1 }} 
           ANNOTATION_TEST_2=${{ secrets.ANNOTATION_TEST_2 }}
           ANNOTATION_TEST_3=${{ secrets.ANNOTATION_TEST_3 }}
           ANNOTATION_TEST_4=${{ secrets.ANNOTATION_TEST_4 }}
           ANNOTATION_TEST_5=${{ secrets.ANNOTATION_TEST_5 }}
           ANNOTATION_TEST_6=${{ vars.VARIABLE_TEST }}
-          java -jar /home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar >> logs"
+          java -jar "$JAR_PATH"/target/auto-deploy.jar >> logs"
           | crontab -
