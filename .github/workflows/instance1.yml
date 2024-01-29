@@ -14,7 +14,7 @@ on:
 
 jobs:
   build-runner:
-    runs-on: runner_new
+    runs-on: runner_new_2
     name: Instance 1
     if: github.ref == 'refs/heads/master'
 
@@ -49,12 +49,12 @@ jobs:
 
       - name: Logs
         run: |
+          sleep 15 &&
           cat logs
           
 
       - name: Check Status
         run: |
-          sleep 20 &&
           response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:${{ vars.VARIABLE_PORT_SERVER }}/ping) &&
           if [ "$response" = "200" ]; then
             echo "Server is running."
