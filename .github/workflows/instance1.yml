@@ -45,7 +45,8 @@ jobs:
       - name: Execute Jar File
         run: >
           JAR_PATH=$(pwd) &&
-          sudo AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}
+          sudo
+          AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}
           SERVER_PORT=${{ vars.VARIABLE_PORT_SERVER }}
           ANNOTATION_TEST_1=${{ secrets.ANNOTATION_TEST_1 }}
           ANNOTATION_TEST_2=${{ secrets.ANNOTATION_TEST_2 }}
@@ -81,6 +82,7 @@ jobs:
         run: >
           JAR_PATH=$(pwd) &&
           echo "@reboot
+          sudo
           AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}
           SERVER_PORT=${{ vars.VARIABLE_PORT_SERVER }}
           ANNOTATION_TEST_1=${{ secrets.ANNOTATION_TEST_1 }} 
