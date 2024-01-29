@@ -53,15 +53,13 @@ jobs:
           ANNOTATION_TEST_6=${{ vars.VARIABLE_TEST }}
           java -jar "$JAR_PATH"/target/auto-deploy.jar >> logs &
 
-      - name: ==Check Status==
+      - name: Check Status
         run: |
-          sleep 10
-          if grep -q "Tomcat started on port" logs && grep -q "Started" logs; then
-            echo "Initialization success"
-            cat logs
+          response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8080/ping)
+          if [ "$response" = "200" ]; then
+            echo "Server is running."
           else
-            echo "Initialization failed. Exiting..."
-            cat logs
+            echo "Server not available!"
             exit 1
           fi
 
