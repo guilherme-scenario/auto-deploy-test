@@ -47,6 +47,11 @@ jobs:
           ANNOTATION_TEST_6=${{ vars.VARIABLE_TEST }}
           java -jar "$JAR_PATH"/target/auto-deploy.jar >> logs &
 
+      - name: Logs
+        run: |
+          nano logs
+          
+
       - name: Check Status
         run: |
           sleep 20 &&
@@ -54,7 +59,8 @@ jobs:
           if [ "$response" = "200" ]; then
             echo "Server is running."
           else
-            echo "Server not available! Status: $response"
+            echo "Server not available! Status: $response" &&
+            nano logs
             exit 1
           fi
 
