@@ -38,7 +38,7 @@ jobs:
 
       - name: Execute Jar File
         run: >
-          JAR_PATH=$(pwd) &&
+          JAR_PATH=$(sudo pwd) &&
           AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}
           SERVER_PORT=${{ vars.VARIABLE_PORT_SERVER }}
           ANNOTATION_TEST_1=${{ secrets.ANNOTATION_TEST_1 }}
@@ -47,7 +47,7 @@ jobs:
           ANNOTATION_TEST_4=${{ secrets.ANNOTATION_TEST_4 }}
           ANNOTATION_TEST_5=${{ secrets.ANNOTATION_TEST_5 }}
           ANNOTATION_TEST_6=${{ vars.VARIABLE_TEST }}
-          sudo java -jar "$JAR_PATH"/target/auto-deploy.jar >> logs &
+          java -jar "$JAR_PATH"/target/auto-deploy.jar >> logs &
 
       - name: Logs
         run: |
@@ -57,7 +57,7 @@ jobs:
 
       - name: Check Status
         run: |
-          response=$(sudo curl -s -o /dev/null -w "%{http_code}" http://localhost:${{ vars.VARIABLE_PORT_SERVER }}/ping) &&
+          response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:${{ vars.VARIABLE_PORT_SERVER }}/ping) &&
           if [ "$response" = "200" ]; then
             echo "Server is running."
           else
@@ -73,7 +73,7 @@ jobs:
 
       - name: Crontab Configuration
         run: >
-          JAR_PATH=$(pwd) &&
+          JAR_PATH=$(sudo pwd) &&
           echo "@reboot
           AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}
           SERVER_PORT=${{ vars.VARIABLE_PORT_SERVER }}
@@ -83,5 +83,5 @@ jobs:
           ANNOTATION_TEST_4=${{ secrets.ANNOTATION_TEST_4 }}
           ANNOTATION_TEST_5=${{ secrets.ANNOTATION_TEST_5 }}
           ANNOTATION_TEST_6=${{ vars.VARIABLE_TEST }}
-          sudo java -jar "$JAR_PATH"/target/auto-deploy.jar >> logs" &
+          java -jar "$JAR_PATH"/target/auto-deploy.jar >> logs" &
           | crontab -
