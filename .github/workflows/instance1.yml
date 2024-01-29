@@ -60,7 +60,7 @@ jobs:
           sudo netfilter-persistent save &&
           response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:${{ vars.VARIABLE_PORT_SERVER }}/ping) &&
           if [ "$response" = "200" ]; then
-            echo "Servir is running."
+            echo "Server is running."
           else
             echo "Server not available! Status: $response"
             exit 1
