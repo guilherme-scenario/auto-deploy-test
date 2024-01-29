@@ -67,11 +67,11 @@ jobs:
 
       - name: Crontab Clear
         run: >
-          JAR_PATH=$(pwd) && 
           echo "" | crontab -
 
       - name: Crontab Configuration
         run: >
+          JAR_PATH=$(pwd) &&
           echo "@reboot
           AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}
           SERVER_PORT=${{ vars.VARIABLE_PORT_SERVER }}
