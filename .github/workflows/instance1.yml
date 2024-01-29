@@ -52,6 +52,7 @@ jobs:
           sleep 20 &&
           sudo iptables -I INPUT -p tcp -m tcp --dport ${{ vars.VARIABLE_PORT_SERVER }} -j ACCEPT &&
           sudo netfilter-persistent save &&
+          sudo netfilter-persistent reload &&
           response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:${{ vars.VARIABLE_PORT_SERVER }}/ping) &&
           if [ "$response" = "200" ]; then
             echo "Server is running."
