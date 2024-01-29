@@ -55,6 +55,8 @@ jobs:
 
       - name: Check Status
         run: >
+          iptables -I INPUT -p tcp -m tcp --dport 8080 -j ACCEPT &&
+          sudo netfilter-persistent save &&
           response=$(curl -s -o /dev/null -w "%{http_code}"
           http://localhost:8080/ping) &&
           if [ "$response" = "200" ];
