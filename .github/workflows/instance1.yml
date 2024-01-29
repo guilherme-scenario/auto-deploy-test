@@ -42,15 +42,16 @@ jobs:
 
       - name: Execute Jar File
         run: >
+          JAR_PATH=$(pwd) &&
           AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}
-          SERVER_PORT=$VARIABLE_PORT_SERVER
+          SERVER_PORT=${{ vars.VARIABLE_PORT_SERVER }}
           ANNOTATION_TEST_1=${{ secrets.ANNOTATION_TEST_1 }}
           ANNOTATION_TEST_2=${{ secrets.ANNOTATION_TEST_2 }}
           ANNOTATION_TEST_3=${{ secrets.ANNOTATION_TEST_3 }}
           ANNOTATION_TEST_4=${{ secrets.ANNOTATION_TEST_4 }}
           ANNOTATION_TEST_5=${{ secrets.ANNOTATION_TEST_5 }}
           ANNOTATION_TEST_6=${{ vars.VARIABLE_TEST }}
-          JAR_PATH=$(pwd) && java -jar "$JAR_PATH"/target/auto-deploy.jar >> logs &
+          java -jar "$JAR_PATH"/target/auto-deploy.jar >> logs &
 
       - name: ==Check Status==
         run: |
@@ -65,18 +66,20 @@ jobs:
           fi
 
       - name: Crontab Clear
-        run: echo "" | crontab -
+        run: >
+          JAR_PATH=$(pwd) && 
+          echo "" | crontab -
 
       - name: Crontab Configuration
         run: >
           echo "@reboot
           AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}
-          SERVER_PORT=${{ secrets.SERVER_PORT }}
+          SERVER_PORT=${{ vars.VARIABLE_PORT_SERVER }}
           ANNOTATION_TEST_1=${{ secrets.ANNOTATION_TEST_1 }} 
           ANNOTATION_TEST_2=${{ secrets.ANNOTATION_TEST_2 }}
           ANNOTATION_TEST_3=${{ secrets.ANNOTATION_TEST_3 }}
           ANNOTATION_TEST_4=${{ secrets.ANNOTATION_TEST_4 }}
           ANNOTATION_TEST_5=${{ secrets.ANNOTATION_TEST_5 }}
           ANNOTATION_TEST_6=${{ vars.VARIABLE_TEST }}
-          JAR_PATH=$(pwd) && java -jar "$JAR_PATH"/target/auto-deploy.jar >> logs"
+          java -jar "$JAR_PATH"/target/auto-deploy.jar >> logs"
           | crontab -
