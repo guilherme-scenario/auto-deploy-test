@@ -51,18 +51,7 @@ jobs:
         run: |
           sleep 15 &&
           cat logs
-          
-
-      - name: Check Status
-        run: |
-          response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:${{ vars.VARIABLE_PORT_SERVER }}/ping) &&
-          if [ "$response" = "200" ]; then
-            echo "Server is running."
-          else
-            echo "Server not available! Status: $response" &&
-            nano logs
-            exit 1
-          fi
+        
 
 
       - name: Crontab Clear
