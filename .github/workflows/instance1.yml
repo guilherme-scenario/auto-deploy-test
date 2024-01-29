@@ -55,14 +55,14 @@ jobs:
 
       - name: Check Status
         run: |
-          sleep 10 &&
-          sudo iptables -I INPUT -p tcp -m tcp --dport 8080 -j ACCEPT &&
+          sleep 20 &&
+          sudo iptables -I INPUT -p tcp -m tcp --dport ${{ vars.VARIABLE_PORT_SERVER }} -j ACCEPT &&
           sudo netfilter-persistent save &&
-          response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8080/ping) &&
+          response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:${{ vars.VARIABLE_PORT_SERVER }}/ping) &&
           if [ "$response" = "200" ]; then
-            echo "O servidor está respondendo corretamente."
+            echo "Servir is running."
           else
-            echo "O servidor não está respondendo corretamente. Status: $response"
+            echo "Server not available! Status: $response"
             exit 1
           fi
 
