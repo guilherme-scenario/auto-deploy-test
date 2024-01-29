@@ -54,15 +54,17 @@ jobs:
           java -jar "$JAR_PATH"/target/auto-deploy.jar >> logs &
 
       - name: Check Status
-        run: >
+        run: |
           sudo iptables -I INPUT -p tcp -m tcp --dport 8080 -j ACCEPT &&
           sudo netfilter-persistent save &&
-          response=$(curl -s -o /dev/null -w "%{http_code}"
-          http://localhost:8080/ping) &&
-          if [ "$response" = "200" ];
-          then echo "O servidor está respondendo corretamente.";
-          else echo "O servidor não está respondendo corretamente.
-          Status: $response"; exit 1; fi
+          response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8080/ping) &&
+          if [ "$response" = "200" ]; then
+            echo "O servidor está respondendo corretamente."
+          else
+            echo "O servidor não está respondendo corretamente. Status: $response"
+            exit 1
+          fi
+
 
       - name: Crontab Clear
         run: >
