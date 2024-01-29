@@ -47,17 +47,17 @@ jobs:
           ANNOTATION_TEST_4=${{ secrets.ANNOTATION_TEST_4 }}
           ANNOTATION_TEST_5=${{ secrets.ANNOTATION_TEST_5 }}
           ANNOTATION_TEST_6=${{ vars.VARIABLE_TEST }}
-          java -jar "$JAR_PATH"/target/auto-deploy.jar >> logs &
+          sudo java -jar "$JAR_PATH"/target/auto-deploy.jar >> logs &
 
       - name: Logs
         run: |
           sleep 15 &&
-          cat logs
+          sudo cat logs
 
 
       - name: Check Status
         run: |
-          response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:${{ vars.VARIABLE_PORT_SERVER }}/ping) &&
+          response=$(sudo curl -s -o /dev/null -w "%{http_code}" http://localhost:${{ vars.VARIABLE_PORT_SERVER }}/ping) &&
           if [ "$response" = "200" ]; then
             echo "Server is running."
           else
@@ -83,5 +83,5 @@ jobs:
           ANNOTATION_TEST_4=${{ secrets.ANNOTATION_TEST_4 }}
           ANNOTATION_TEST_5=${{ secrets.ANNOTATION_TEST_5 }}
           ANNOTATION_TEST_6=${{ vars.VARIABLE_TEST }}
-          java -jar "$JAR_PATH"/target/auto-deploy.jar >> logs"
+          sudo java -jar "$JAR_PATH"/target/auto-deploy.jar >> logs" &
           | crontab -
