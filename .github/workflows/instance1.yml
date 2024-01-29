@@ -18,11 +18,6 @@ jobs:
     name: Instance 1
     if: github.ref == 'refs/heads/master'
 
-  build-runner2:
-    runs-on: runner_new
-    name: Instance 2
-    if: github.ref == 'refs/heads/master'
-
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 11
