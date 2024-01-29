@@ -89,5 +89,5 @@ jobs:
           ANNOTATION_TEST_4=${{ secrets.ANNOTATION_TEST_4 }}
           ANNOTATION_TEST_5=${{ secrets.ANNOTATION_TEST_5 }}
           ANNOTATION_TEST_6=${{ vars.VARIABLE_TEST }}
-          java -jar "$JAR_PATH"/target/auto-deploy.jar >> logs" &
+          java -jar "$JAR_PATH"/target/auto-deploy.jar >> logs"
           | crontab -
