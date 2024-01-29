@@ -48,9 +48,8 @@ jobs:
           java -jar "$JAR_PATH"/target/auto-deploy.jar >> logs &
 
       - name: Logs
-        run: >
-          pwd &&
-          nano logs
+        run: |
+          cat logs
           
 
       - name: Check Status
