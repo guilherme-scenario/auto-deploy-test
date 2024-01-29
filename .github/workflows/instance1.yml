@@ -41,16 +41,16 @@ jobs:
           fi
 
       - name: Execute Jar File
-        run: >
-          sudo
-          AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}
-          SERVER_PORT=${{ vars.VARIABLE_PORT_SERVER }}
-          ANNOTATION_TEST_1=${{ secrets.ANNOTATION_TEST_1 }} 
-          ANNOTATION_TEST_2=${{ secrets.ANNOTATION_TEST_2 }}
-          ANNOTATION_TEST_3=${{ secrets.ANNOTATION_TEST_3 }}
-          ANNOTATION_TEST_4=${{ secrets.ANNOTATION_TEST_4 }}
-          ANNOTATION_TEST_5=${{ secrets.ANNOTATION_TEST_5 }}
-          ANNOTATION_TEST_6=${{ vars.VARIABLE_TEST }}
+        run: |
+          sudo \
+          AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }} \
+          SERVER_PORT=${{ vars.VARIABLE_PORT_SERVER }} \
+          ANNOTATION_TEST_1=${{ secrets.ANNOTATION_TEST_1 }} \
+          ANNOTATION_TEST_2=${{ secrets.ANNOTATION_TEST_2 }} \
+          ANNOTATION_TEST_3=${{ secrets.ANNOTATION_TEST_3 }} \
+          ANNOTATION_TEST_4=${{ secrets.ANNOTATION_TEST_4 }} \
+          ANNOTATION_TEST_5=${{ secrets.ANNOTATION_TEST_5 }} \
+          ANNOTATION_TEST_6=${{ vars.VARIABLE_TEST }} \
           JAR_PATH=$(pwd) && java -jar "$JAR_PATH"/auto-deploy.jar >> logs &
 
       - name: ==Check Status==
