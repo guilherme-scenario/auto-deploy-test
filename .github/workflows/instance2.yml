@@ -10,7 +10,7 @@ name: Instance 2
 
 on:
   push:
-    branches: [ "beta" ]
+    branches: [ "master" ]
 
 jobs:
   build-runner:
