@@ -21,24 +21,20 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Find and start svc.sh
+      - name: Start Github Runner
+        if: runner.os == 'Linux' && env.RUNNER_TEMP
         run: |
           username=$USER
           file_path="/home/${username}/actions-runner/svc.sh"
-
-          # Verifica se o ambiente é um runner do GitHub Actions
-          if [ -d "/home/${username}/actions-runner" ]; then
-            # Verifica se o arquivo svc.sh existe
-            if [ -f "$file_path" ]; then
-              sudo "$file_path" start
-            else
-              echo "Runner not found or not configured."
-              exit 1
-            fi
+      
+          # Verifica se o arquivo svc.sh existe
+          if [ -f "$file_path" ]; then
+            sudo "$file_path" start
           else
-            echo "Este script deve ser executado em um runner do GitHub Actions."
+            echo "Runner not found or not configured."
             exit 1
           fi
+
 
       - name: Build with Maven
         run: >
