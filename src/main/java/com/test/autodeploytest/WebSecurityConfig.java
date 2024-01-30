@@ -17,6 +17,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
@@ -47,10 +48,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        var configuration = new CorsConfiguration();
+        CorsConfiguration configuration = new CorsConfiguration();
+        ArrayList<String> list = new ArrayList<>();
+        ArrayList<String> list2 = new ArrayList<>();
+        list.add("*");
+        list2.add("GET");
+        list2.add("POST");
+        list2.add("PUT");
+        list2.add("DELETE");
         configuration.applyPermitDefaultValues();
-        configuration.setAllowedOrigins(List.of("*"));
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+        configuration.setAllowedOrigins(list);
+        configuration.setAllowedMethods(list2);
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
