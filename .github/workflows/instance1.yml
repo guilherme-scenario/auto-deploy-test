@@ -28,13 +28,11 @@ jobs:
           jar_path="/home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar"
 
           if [ -n "$jar_path" ]; then
-          old_jar_path="/home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/target/${jar_path}_old.jar"
-          
-          mv "$jar_path" "$old_jar_path"
-          
-          echo "O arquivo JAR $jar_path foi renomeado para $old_jar_path."
+            old_jar_path="/home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/target/${jar_path}_old.jar"
+            mv "$jar_path" "$old_jar_path"
+            echo "O arquivo JAR $jar_path foi renomeado para $old_jar_path."
           else
-          echo "Nenhuma menção ao arquivo JAR auto-deploy.jar foi encontrada no crontab."
+            echo "Nenhuma menção ao arquivo JAR auto-deploy.jar foi encontrada no crontab."
           fi
           
           crontab - < crontab_old.txt
