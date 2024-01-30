@@ -23,10 +23,8 @@ jobs:
 
       - name: Crontab Backup
         run: |
-          # Backup do crontab
           crontab -l > crontab_old.txt
           
-          # Verificar menção ao JAR e renomeá-lo
           jar_path=$(grep -oP '\b/home/\S+\.jar\b' crontab_old.txt)
           if [ -n "$jar_path" ]; then
               old_jar_path="${jar_path%.jar}_old.jar"
@@ -36,7 +34,6 @@ jobs:
               echo "Nenhuma menção a um arquivo JAR encontrada no crontab."
           fi
           
-          # Adicionar conteúdo de crontab_old.txt ao crontab
           crontab - < crontab_old.txt
 
 
