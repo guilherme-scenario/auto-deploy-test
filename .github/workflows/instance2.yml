@@ -15,7 +15,7 @@ on:
 jobs:
   build-runner:
     runs-on: runner_new
-    name: Instance 1
+    name: Instance 2
     if: github.ref == 'refs/heads/master'
 
     steps:
