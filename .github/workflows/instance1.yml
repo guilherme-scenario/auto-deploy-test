@@ -25,7 +25,7 @@ jobs:
         run: |
           crontab -l > crontab_old.txt
           
-          jar_path="/home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar" crontab_old.txt || true)
+          jar_path="/home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar"
 
           if [ -n "$jar_path" ]; then
           old_jar_path="/home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/target/${jar_path}_old.jar"
