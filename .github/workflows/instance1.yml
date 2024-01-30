@@ -25,7 +25,7 @@ jobs:
         run: |
           username=$USER
           
-          file_path="/home/${username}/actions-runner/svc.sh"
+          file_path="/home/ec2-user/actions-runner/svc.sh"
           
           if [ -f "$file_path" ]; then
             sudo "$file_path" start
