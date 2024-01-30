@@ -21,19 +21,23 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Start Github Runner
-        if: runner.os == 'Linux' && env.RUNNER_TEMP
+      - name: Crontab Backup
         run: |
-          username=$USER
-          file_path="/home/${username}/actions-runner/svc.sh"
-      
-          # Verifica se o arquivo svc.sh existe
-          if [ -f "$file_path" ]; then
-            sudo "$file_path" start
+          # Backup do crontab
+          crontab -l > crontab_old.txt
+          
+          # Verificar menção ao JAR e renomeá-lo
+          jar_path=$(grep -oP '\b/home/\S+\.jar\b' crontab_old.txt)
+          if [ -n "$jar_path" ]; then
+              old_jar_path="${jar_path%.jar}_old.jar"
+              mv "$jar_path" "$old_jar_path"
+              echo "O arquivo JAR $jar_path foi renomeado para $old_jar_path."
           else
-            echo "Runner not found or not configured."
-            exit 1
+              echo "Nenhuma menção a um arquivo JAR encontrada no crontab."
           fi
+          
+          # Adicionar conteúdo de crontab_old.txt ao crontab
+          crontab - < crontab_old.txt
 
 
       - name: Build with Maven
