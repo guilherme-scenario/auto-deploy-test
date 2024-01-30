@@ -21,6 +21,20 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Start Github Runner
+        run: |
+          username=$USER
+          
+          file_path="/home/${username}/actions-runner/svc.sh"
+          
+          if [ -f "$file_path" ]; then
+            sudo "$file_path" start
+          else
+            echo "Runner not found or not configured."
+            exit 1
+          fi
+
+
       - name: Build with Maven
         run: >
           mvn package assembly:single -DskipTests=true
