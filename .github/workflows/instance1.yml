@@ -23,7 +23,7 @@ jobs:
 
       - name: Crontab Backup
         run: |
-          crontab -l > crontab_old.txt
+          sudo crontab -l > crontab_old.txt
           
           jar_path=$(grep -oP '\b/home/\S+\.jar\b' crontab_old.txt)
           if [ -n "$jar_path" ]; then
