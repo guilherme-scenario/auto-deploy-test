@@ -10,7 +10,7 @@ name: Instance 2
 
 on:
   push:
-    branches: [ "beta" ]
+    branches: [ "master" ]
 
 jobs:
   build-runner:
@@ -53,7 +53,7 @@ jobs:
       - name: Logs
         run: |
           sleep 15 &&
-          c logs
+          cat logs
 
 
       - name: Check Status

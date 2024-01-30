@@ -21,23 +21,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Crontab Backup
-        run: |
-          sudo crontab -l > crontab_old.txt
-          
-          jar_path="/home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/target/auto-deploy.jar"
-
-          if [ -e "$jar_path" ]; then
-            old_jar_path="/home/ec2-user/actions-runner/_work/auto-deploy-test/auto-deploy-test/target/${jar_path}_old.jar"
-            sudo mv "$jar_path" "$old_jar_path"
-            echo "O arquivo JAR $jar_path foi renomeado para $old_jar_path."
-          else
-            echo "Nenhuma menção ao arquivo JAR auto-deploy.jar foi encontrada no crontab."
-          fi
-          
-          crontab - < crontab_old.txt
-
-
       - name: Build with Maven
         run: >
           mvn package assembly:single -DskipTests=true
