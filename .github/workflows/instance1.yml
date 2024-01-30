@@ -23,9 +23,9 @@ jobs:
 
       - name: Crontab Backup
         run: |
-          sudo crontab -l > crontab_old.txt
+          crontab -l > crontab_old.txt
           
-          jar_path=$(grep -oP '\b/home/\S+\.jar\b' crontab_old.txt)
+          jar_path=$(grep -oP '\b/home/\S+\.jar\b' crontab_old.txt || true)
           if [ -n "$jar_path" ]; then
               old_jar_path="${jar_path%.jar}_old.jar"
               mv "$jar_path" "$old_jar_path"
