@@ -78,7 +78,7 @@ jobs:
           echo "" | crontab -
 
       - name: Crontab Configuration
-        run: >
+        run: |
           JAR_FILE=$(find "$(pwd)/target" -maxdepth 1 -name "*.jar" ! -name "*SNAPSHOT*" -print -quit)
           if [ -n "$JAR_FILE" ]; then
             echo "Jar file found: $JAR_FILE" -> Executing...
