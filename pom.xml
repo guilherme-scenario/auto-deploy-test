@@ -24,7 +24,7 @@
 					<artifactId>maven-assembly-plugin</artifactId>
 					<version>3.0.0</version>
 					<configuration>
-						<finalName>${env.JAR_NAME:jar_file}</finalName>
+						<finalName>auto-deploy</finalName>
 						<appendAssemblyId>false</appendAssemblyId>
 						<archive>
 							<manifest>
