@@ -81,7 +81,6 @@ jobs:
         run: >
           JAR_FILE=$(find "$(pwd)/target" -maxdepth 1 -name "*.jar" ! -name "*SNAPSHOT*" -print -quit) &&
           if [ -n "$JAR_FILE" ]; then
-            echo "Jar file found: $JAR_FILE" -> Executing... &&
             echo "@reboot
             sudo 
             AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}
