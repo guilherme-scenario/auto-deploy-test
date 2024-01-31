@@ -14,7 +14,7 @@ on:
 
 jobs:
   build-runner:
-    runs-on: runner_new_5
+    runs-on: runner_new_6
     name: Instance 4
     if: github.ref == 'refs/heads/master'
 
