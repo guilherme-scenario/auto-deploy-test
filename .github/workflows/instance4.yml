@@ -78,21 +78,22 @@ jobs:
           echo "" | crontab -
 
       - name: Crontab Configuration
-        run: >
-          JAR_FILE=$(find "$(pwd)/target" -maxdepth 1 -name "*.jar" ! -name "*SNAPSHOT*" -print -quit) &&
+        run: |
+          JAR_FILE=$(find "$(pwd)/target" -maxdepth 1 -name "*.jar" ! -name "*SNAPSHOT*" -print -quit)
           if [ -n "$JAR_FILE" ]; then
-            echo "@reboot
-            sudo 
-            AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}
-            SERVER_PORT=${{ vars.VARIABLE_PORT_SERVER }}
-            ANNOTATION_TEST_1=${{ secrets.ANNOTATION_TEST_1 }}
-            ANNOTATION_TEST_2=${{ secrets.ANNOTATION_TEST_2 }}
-            ANNOTATION_TEST_3=${{ secrets.ANNOTATION_TEST_3 }}
-            ANNOTATION_TEST_4=${{ secrets.ANNOTATION_TEST_4 }}
-            ANNOTATION_TEST_5=${{ secrets.ANNOTATION_TEST_5 }}
-            ANNOTATION_TEST_6=${{ vars.VARIABLE_TEST }}
-            java -jar "$JAR_FILE" >> logs"
-            | crontab -
+            echo "Jar file found: $JAR_FILE" -> Executing...
+            (
+            echo "@reboot"
+            echo "sudo AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}"
+            echo "SERVER_PORT=${{ vars.VARIABLE_PORT_SERVER }}"
+            echo "ANNOTATION_TEST_1=${{ secrets.ANNOTATION_TEST_1 }}"
+            echo "ANNOTATION_TEST_2=${{ secrets.ANNOTATION_TEST_2 }}"
+            echo "ANNOTATION_TEST_3=${{ secrets.ANNOTATION_TEST_3 }}"
+            echo "ANNOTATION_TEST_4=${{ secrets.ANNOTATION_TEST_4 }}"
+            echo "ANNOTATION_TEST_5=${{ secrets.ANNOTATION_TEST_5 }}"
+            echo "ANNOTATION_TEST_6=${{ vars.VARIABLE_TEST }}"
+            echo "java -jar \"$JAR_FILE\" >> logs"
+            ) | crontab -
           else
             echo "No jar file found."
           fi
