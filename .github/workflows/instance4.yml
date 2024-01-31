@@ -57,8 +57,7 @@ jobs:
           if [ -n "$JAR_FILE" ]; then
             JAR_FILENAME=$(basename "$JAR_FILE")
             BACKUP_FILENAME="${JAR_FILENAME%.*}_backup.jar"
-            cp "$JAR_FILE" "$(pwd)/$BACKUP_FILENAME"
-            echo "Jar file found: $JAR_FILE" -> Executing...
+            cp "$JAR_FILE" "$(pwd)"
             sudo AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }} \
             SERVER_PORT=${{ vars.VARIABLE_PORT_SERVER }} \
             ANNOTATION_TEST_1=${{ secrets.ANNOTATION_TEST_1 }} \
