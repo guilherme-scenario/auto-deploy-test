@@ -38,6 +38,7 @@ jobs:
 
       - name: Execute Jar File
         run: >
+          sleep 3 &&
           JAR_PATH=$(pwd) &&
           sudo
           AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}
