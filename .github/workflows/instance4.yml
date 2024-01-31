@@ -23,6 +23,7 @@ jobs:
 
       - name: Backup Old Jar
         run: |
+          sleep 3
           JAR_FILE=$(find "$(pwd)/target" -maxdepth 1 -name "*.jar" ! -name "*SNAPSHOT*" -print -quit)
           if [ -n "$JAR_FILE" ]; then
             JAR_FILENAME=$(basename "$JAR_FILE")
