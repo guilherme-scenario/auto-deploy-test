@@ -41,8 +41,9 @@ jobs:
           sleep 3 &&
           JAR_FILE=$(find "$(pwd)/target" -maxdepth 1 -name "*.jar" ! -name "*SNAPSHOT*" -print -quit) &&
           if [ -n "$JAR_FILE" ]; then
-            echo "Jar file found: $JAR_FILE" -> Executing...
-            sudo AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}
+            echo "Jar file found: $JAR_FILE" -> Executing... &&
+            sudo 
+            AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}
             SERVER_PORT=${{ vars.VARIABLE_PORT_SERVER }}
             ANNOTATION_TEST_1=${{ secrets.ANNOTATION_TEST_1 }}
             ANNOTATION_TEST_2=${{ secrets.ANNOTATION_TEST_2 }}
