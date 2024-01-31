@@ -78,8 +78,8 @@ jobs:
           echo "" | crontab -
 
       - name: Crontab Configuration
-        run: |
-          JAR_FILE=$(find "$(pwd)/target" -maxdepth 1 -name "*.jar" ! -name "*SNAPSHOT*" -print -quit)
+        run: >
+          JAR_FILE=$(find "$(pwd)/target" -maxdepth 1 -name "*.jar" ! -name "*SNAPSHOT*" -print -quit) &&
           if [ -n "$JAR_FILE" ]; then
             echo "Jar file found: $JAR_FILE" -> Executing...
             sudo AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }} \
@@ -91,7 +91,7 @@ jobs:
             ANNOTATION_TEST_5=${{ secrets.ANNOTATION_TEST_5 }} \
             ANNOTATION_TEST_6=${{ vars.VARIABLE_TEST }} \
             java -jar "$JAR_FILE" >> logs &
+            | crontab -
           else
             echo "No jar file found."
           fi
-          | crontab -
