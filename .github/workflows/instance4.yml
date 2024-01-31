@@ -23,6 +23,7 @@ jobs:
 
       - name: Backup Old Jar
         run: |
+          sudo pwd
           sleep 3
           JAR_FILE=$(find "$(pwd)/target" -maxdepth 1 -name "*.jar" ! -name "*SNAPSHOT*" -print -quit)
           if [ -n "$JAR_FILE" ]; then
