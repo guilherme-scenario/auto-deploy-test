@@ -25,7 +25,7 @@ jobs:
         run: |
           sudo pwd
           sleep 3
-          JAR_FILE=$(find "$(pwd)/target" -maxdepth 1 -name "*.jar" ! -name "*SNAPSHOT*" -print -quit)
+          JAR_FILE=$(find "$(pwd)" -maxdepth 1 -name "*.jar" ! -name "*SNAPSHOT*" -print -quit)
           if [ -n "$JAR_FILE" ]; then
             JAR_FILENAME=$(basename "$JAR_FILE")
             NEW_JAR_FILENAME="${JAR_FILENAME%.*}_old.jar"
@@ -55,6 +55,9 @@ jobs:
           sleep 3
           JAR_FILE=$(find "$(pwd)/target" -maxdepth 1 -name "*.jar" ! -name "*SNAPSHOT*" -print -quit)
           if [ -n "$JAR_FILE" ]; then
+            JAR_FILENAME=$(basename "$JAR_FILE")
+            BACKUP_FILENAME="${JAR_FILENAME%.*}_backup.jar"
+            cp "$JAR_FILE" "$(pwd)/$BACKUP_FILENAME"
             echo "Jar file found: $JAR_FILE" -> Executing...
             sudo AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }} \
             SERVER_PORT=${{ vars.VARIABLE_PORT_SERVER }} \
