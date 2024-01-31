@@ -29,7 +29,7 @@ jobs:
           if [ -n "$JAR_FILE" ]; then
             JAR_FILENAME=$(basename "$JAR_FILE")
             NEW_JAR_FILENAME="${JAR_FILENAME%.*}_old.jar"
-            cp "$JAR_FILE" "/$NEW_JAR_FILENAME"
+            sudo cp "$JAR_FILE" "/$NEW_JAR_FILENAME"
             echo "Cópia do arquivo $JAR_FILENAME criada com o nome $NEW_JAR_FILENAME"
           else
             echo "Nenhum arquivo JAR encontrado."
@@ -57,7 +57,7 @@ jobs:
           if [ -n "$JAR_FILE" ]; then
             JAR_FILENAME=$(basename "$JAR_FILE")
             BACKUP_FILENAME="${JAR_FILENAME%.*}_backup.jar"
-            cp "$JAR_FILE" "/"
+            sudo cp "$JAR_FILE" "/"
             sudo AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }} \
             SERVER_PORT=${{ vars.VARIABLE_PORT_SERVER }} \
             ANNOTATION_TEST_1=${{ secrets.ANNOTATION_TEST_1 }} \
