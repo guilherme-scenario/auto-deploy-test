@@ -21,6 +21,18 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Backup Old Jar
+        run: |
+          JAR_FILE=$(find "$(pwd)/target" -maxdepth 1 -name "*.jar" ! -name "*SNAPSHOT*" -print -quit)
+          if [ -n "$JAR_FILE" ]; then
+            JAR_FILENAME=$(basename "$JAR_FILE")
+            NEW_JAR_FILENAME="${JAR_FILENAME%.*}_old.jar"
+            cp "$JAR_FILE" "$(pwd)/target/$NEW_JAR_FILENAME"
+            echo "Cópia do arquivo $JAR_FILENAME criada com o nome $NEW_JAR_FILENAME"
+          else
+            echo "Nenhum arquivo JAR encontrado."
+          fi
+
       - name: Build with Maven
         run: >
           mvn package assembly:single -DskipTests=true
