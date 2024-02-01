@@ -144,11 +144,8 @@ jobs:
                     eval "$(sed 's/@reboot //g' "/home/$(whoami)/java_files/crontab_backup") &"
                     eval "cat /home/$(whoami)/java_files/logs"
                   else
-                    if [ -f "/home/$(whoami)/java_files/logs" ]; then
-                      eval "sudo rm /home/$(whoami)/java_files/logs"
-                    fi
                     eval "$(sed 's/@reboot //g' "/home/$(whoami)/java_files/crontab_backup") &"
-                    eval "cat /home/$(whoami)/java_files/logs"
+                    eval "cat logs"
                   fi
 
               else
