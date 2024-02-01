@@ -37,9 +37,9 @@ jobs:
         run: |
           sudo pwd
           sleep 3
-          JAR_FILE=$(find "/" -maxdepth 1 -name "*.jar" ! -name "*SNAPSHOT*" -print -quit)
+          USER_NAME=$(whoami)
+          JAR_FILE=$(find "/home/$USER_NAME/java_files" -maxdepth 1 -name "*.jar" ! -name "*_old*" -print -quit)
           if [ -n "$JAR_FILE" ]; then
-            USER_NAME=$(whoami)
             JAR_FILENAME=$(basename "$JAR_FILE")
             NEW_JAR_FILENAME="${JAR_FILENAME%.*}_old.jar"
             sudo cp "$JAR_FILE" "/home/$USER_NAME/$NEW_JAR_FILENAME"
@@ -66,6 +66,7 @@ jobs:
       - name: Execute Jar File
         run: |
           sleep 3
+          USER_NAME=$(whoami)
           JAR_FILE=$(find "/home/$USER_NAME/java_files" -maxdepth 1 -name "*.jar" ! -name "*_old*" -print -quit)
           if [ -n "$JAR_FILE" ]; then
             JAR_FILENAME=$(basename "$JAR_FILE")
@@ -107,6 +108,7 @@ jobs:
 
       - name: Crontab Configuration
         run: >
+          USER_NAME=$(whoami) &&
           JAR_FILE=$(find "/home/$USER_NAME/java_files" -maxdepth 1 -name "*.jar" ! -name "*_old*" -print -quit) &&
           echo "@reboot
           sudo 
