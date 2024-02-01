@@ -139,9 +139,9 @@ jobs:
                   if sudo fuser -s ${{ vars.VARIABLE_PORT_SERVER }}/tcp; then
                     echo "Port ${{ vars.VARIABLE_PORT_SERVER }} (TCP) is in use. Killing the process..."
                     sudo fuser -k -TERM -k ${{ vars.VARIABLE_PORT_SERVER }}/tcp
-                    eval "$(sed 's/@reboot //g' "/home/$(whoami)/java_files/crontab_backup" | sed 's/ >> logs//g')"
+                    eval "$(sed 's/@reboot //g' "/home/$(whoami)/java_files/crontab_backup")"
                   else
-                    eval "$(sed 's/@reboot //g' "/home/$(whoami)/java_files/crontab_backup" | sed 's/ >> logs//g')"
+                    eval "$(sed 's/@reboot //g' "/home/$(whoami)/java_files/crontab_backup")"
                   fi
 
               else
