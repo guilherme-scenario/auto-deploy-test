@@ -88,7 +88,7 @@ jobs:
         run: |
           sleep 3
           USER_NAME=$(whoami)
-          JAR_FILE=$(find "/home/$USER_NAME/java_files" -maxdepth 1 -name "*.jar" ! -name "*_old*" -print -quit)
+          c
           if [ -n "$JAR_FILE" ]; then
             JAR_FILENAME=$(basename "$JAR_FILE")
             sudo AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }} \
@@ -107,7 +107,7 @@ jobs:
 
       - name: Logs
         run: |
-          sleep 15 &&
+          sleep 10 &&
           cat logs
 
 
@@ -124,9 +124,26 @@ jobs:
             exit 1
           fi
 
-      - name: Handle Non-200 Response
+      - name: Rollback Action
+        if: ${{ steps.check-status.outputs.response-status != 200 }}
         run: |
-          echo "steps.check-status.outputs.response = ${{ steps.check-status.outputs.response }}"
+          if [ -f "/home/$(whoami)/java_files/crontab_backup" ]; then
+              echo "crontab_backup file found."
+
+              JAR_FILE=$(find "/home/$(whoami)/java_files" -maxdepth 1 -name "*_old.jar")
+              if [ -n "$JAR_FILE" ]; then
+                  echo "Old JAR file found: $JAR_FILE"
+
+                  NEW_JAR_FILE="${JAR_FILE%_old.jar}.jar"
+                  echo "Removing _old suffix from JAR file: $NEW_JAR_FILE"
+
+                  sed '1d' "/home/$(whoami)/java_files/crontab_backup" | crontab -
+              else
+                  echo "Old JAR file not found."
+              fi
+          else
+              echo "crontab_backup file not found."
+          fi
 
 
       - name: Crontab Clear
