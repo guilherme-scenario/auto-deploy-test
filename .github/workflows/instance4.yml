@@ -114,7 +114,7 @@ jobs:
       - name: CheckStatus
         id: check-status
         run: |
-          response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:${{ vars.VARIABLE_PORT_SERVER }}/ping) &&
+          response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:${{ vars.VARIABLE_PORT_SERVER }}/ping)
           echo "response-status=$response" >> $GITHUB_OUTPUT
           if [ "$response" = "200" ]; then
             echo "Server is running."
