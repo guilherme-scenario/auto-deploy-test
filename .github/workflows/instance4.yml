@@ -122,6 +122,11 @@ jobs:
             exit 1
           fi
 
+      - name: Handle Non-200 Response
+        if: ${{ steps.CheckStatus.outputs.response != '200' }}
+        run: |
+          echo "Handling non-200 response from previous step..."
+
 
       - name: Crontab Clear
         run: >
