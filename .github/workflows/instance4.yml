@@ -112,24 +112,28 @@ jobs:
 
 
       - name: CheckStatus
-        id: check_status
+        id: check-status
         run: |
-          response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:${{ vars.VARIABLE_PORT_SERVER }}/ping)
-          echo "name=response_code=$response" >> $GITHUB_OUTPUT
+          response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:${{ vars.VARIABLE_PORT_SERVER }}/ping) &&
+          echo "response-status=$response" >> $GITHUB_OUTPUT
+          if [ "$response" = "200" ]; then
+            echo "Server is running."
+          else
+            echo "Server not available! Status: $response" &&
+            cat logs
+            exit 1
+          fi
 
       - name: Handle Non-200 Response
-        if: ${{ steps.check_status.outputs.response != '200' }}
         run: |
-          echo "Handling non-200 response from previous step..."
+          echo "steps.check-status.outputs.response = ${{ steps.check-status.outputs.response }}"
 
 
       - name: Crontab Clear
-        if: ${{ steps.check_status.outputs.response == '200' }}
         run: >
           echo "" | crontab -
 
       - name: Crontab Configuration
-        if: ${{ steps.check_status.outputs.response == '200' }}
         run: >
           USER_NAME=$(whoami) &&
           JAR_FILE=$(find "/home/$USER_NAME/java_files" -maxdepth 1 -name "*.jar" ! -name "*_old*" -print -quit) &&
