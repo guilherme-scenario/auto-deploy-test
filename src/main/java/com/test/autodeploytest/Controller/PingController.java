@@ -14,12 +14,12 @@ public class PingController {
     @GetMapping
     public ResponseEntity<String> ping() {
 
-        return ResponseEntity.ok("OK");
+        return ResponseEntity.ok("-");
     }
 
     @GetMapping("/ping")
     public ResponseEntity<String> ping2() {
 
-        return ResponseEntity.ok("pong Instance 1");
+        return ResponseEntity.notFound().build();
     }
 }
