@@ -42,7 +42,7 @@ jobs:
           if [ -n "$JAR_FILE" ]; then
             JAR_FILENAME=$(basename "$JAR_FILE")
             NEW_JAR_FILENAME="${JAR_FILENAME%.*}_old.jar"
-            sudo cp "$JAR_FILE" "/home/$USER_NAME/$NEW_JAR_FILENAME"
+            sudo cp "$JAR_FILE" "/home/$USER_NAME/java_files/$NEW_JAR_FILENAME"
             echo "Created copy of $JAR_FILENAME === $NEW_JAR_FILENAME in /home/$USER_NAME"
           else
             echo "JAR file not found."
@@ -51,6 +51,19 @@ jobs:
       - name: Build with Maven
         run: >
           mvn package assembly:single -DskipTests=true
+ed
+      - name: Copy Post Build Jar File
+        run: |
+          USER_NAME=$(whoami)
+          JAR_FILE=$(find "$(pwd)/target" -maxdepth 1 -name "*.jar" ! -name "*SNAPSHOT*" -print -quit)
+          if [ -n "$JAR_FILE" ]; then
+            JAR_FILENAME=$(basename "$JAR_FILE")
+            NEW_JAR_FILENAME="${JAR_FILENAME%.*}_old.jar"
+            sudo cp "$JAR_FILE" "/home/$USER_NAME/java_files"
+            echo "Created copy of $JAR_FILENAME === $NEW_JAR_FILENAME in /home/$USER_NAME"
+          else
+            echo "JAR file not found."
+          fi
 
       - name: Kill Port
         run: |
