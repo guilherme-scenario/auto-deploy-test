@@ -21,18 +21,31 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Check and Create java_files directory
+        run: |
+          USER_NAME=$(whoami)
+          if [ ! -d "/home/$USER_NAME/java_files" ]; then
+              # If the java_files folder does not exist, create it
+              mkdir -p "/home/$USER_NAME/java_files"
+              echo "java_files folder created in /home/$USER_NAME"
+          else
+              echo "java_files folder already exists in /home/$USER_NAME"
+          fi
+
+
       - name: Backup Old Jar
         run: |
           sudo pwd
           sleep 3
           JAR_FILE=$(find "/" -maxdepth 1 -name "*.jar" ! -name "*SNAPSHOT*" -print -quit)
           if [ -n "$JAR_FILE" ]; then
+            USER_NAME=$(whoami)
             JAR_FILENAME=$(basename "$JAR_FILE")
             NEW_JAR_FILENAME="${JAR_FILENAME%.*}_old.jar"
-            sudo cp "$JAR_FILE" "/$NEW_JAR_FILENAME"
-            echo "Cópia do arquivo $JAR_FILENAME criada com o nome $NEW_JAR_FILENAME"
+            sudo cp "$JAR_FILE" "/home/$USER_NAME/$NEW_JAR_FILENAME"
+            echo "Created copy of $JAR_FILENAME === $NEW_JAR_FILENAME in /home/$USER_NAME"
           else
-            echo "Nenhum arquivo JAR encontrado."
+            echo "JAR file not found."
           fi
 
       - name: Build with Maven
@@ -53,11 +66,9 @@ jobs:
       - name: Execute Jar File
         run: |
           sleep 3
-          JAR_FILE=$(find "$(pwd)/target" -maxdepth 1 -name "*.jar" ! -name "*SNAPSHOT*" -print -quit)
+          JAR_FILE=$(find "/home/$USER_NAME/java_files" -maxdepth 1 -name "*.jar" ! -name "*_old*" -print -quit)
           if [ -n "$JAR_FILE" ]; then
             JAR_FILENAME=$(basename "$JAR_FILE")
-            BACKUP_FILENAME="${JAR_FILENAME%.*}_backup.jar"
-            sudo cp "$JAR_FILE" "/"
             sudo AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }} \
             SERVER_PORT=${{ vars.VARIABLE_PORT_SERVER }} \
             ANNOTATION_TEST_1=${{ secrets.ANNOTATION_TEST_1 }} \
@@ -96,7 +107,7 @@ jobs:
 
       - name: Crontab Configuration
         run: >
-          JAR_FILE=$(find "$(pwd)/target" -maxdepth 1 -name "*.jar" ! -name "*SNAPSHOT*" -print -quit) &&
+          JAR_FILE=$(find "/home/$USER_NAME/java_files" -maxdepth 1 -name "*.jar" ! -name "*_old*" -print -quit) &&
           echo "@reboot
           sudo 
           AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}
