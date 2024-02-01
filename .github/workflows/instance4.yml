@@ -124,14 +124,15 @@ jobs:
             cat logs
           fi
 
-      - name: Rollback Action
+      - name: ==== ROLLBACK ACTION ====
         if: ${{ steps.check-status.outputs.response-status != 200 }}
         run: |
           set +e
-          if [ -f "/home/$(whoami)/java_files/crontab_backup" ]; then
+          USER_NAME=$(whoami)
+          if [ -f "/home/$USER_NAME/java_files/crontab_backup" ]; then
               echo "crontab_backup file found."
 
-              JAR_FILE=$(find "/home/$(whoami)/java_files" -maxdepth 1 -name "*_old.jar")
+              JAR_FILE=$(find "/home/$USER_NAME/java_files" -maxdepth 1 -name "*_old.jar")
               if [ -n "$JAR_FILE" ]; then
                   echo "Old JAR file found: $JAR_FILE"
 
@@ -142,11 +143,11 @@ jobs:
                   if sudo fuser -s ${{ vars.VARIABLE_PORT_SERVER }}/tcp; then
                     echo "Port ${{ vars.VARIABLE_PORT_SERVER }} (TCP) is in use. Killing the process..."
                     sudo fuser -k -TERM -k ${{ vars.VARIABLE_PORT_SERVER }}/tcp
-                    eval "$(sed 's/@reboot //g' "/home/$(whoami)/java_files/crontab_backup") &"
+                    eval "$(sed 's/@reboot //g' "/home/$USER_NAME/java_files/crontab_backup") &"
                     sleep 10
                     eval "cat logs"
                   else
-                    eval "$(sed 's/@reboot //g' "/home/$(whoami)/java_files/crontab_backup") &"
+                    eval "$(sed 's/@reboot //g' "/home/$USER_NAMEs/java_files/crontab_backup") &"
                     sleep 10
                     eval "cat logs"
                   fi
