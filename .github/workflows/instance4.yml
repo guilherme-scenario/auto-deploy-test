@@ -49,6 +49,12 @@ jobs:
             echo "JAR file not found."
           fi
 
+      - name: Backup Crontab
+        run: |
+          USER_NAME=$(whoami)
+          DESTINY="/home/$USER_NAME/java_files"
+          crontab -l > $DESTINY/crontab_backup
+
       - name: Build with Maven
         run: >
           mvn package assembly:single -DskipTests=true
