@@ -20,6 +20,6 @@ public class PingController {
     @GetMapping("/ping")
     public ResponseEntity<String> ping2() {
 
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok("");
     }
 }
