@@ -51,7 +51,7 @@ jobs:
       - name: Build with Maven
         run: >
           mvn package assembly:single -DskipTests=true
-ed
+
       - name: Copy Post Build Jar File
         run: |
           USER_NAME=$(whoami)
