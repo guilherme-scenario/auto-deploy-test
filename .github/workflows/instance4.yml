@@ -114,8 +114,8 @@ jobs:
       - name: CheckStatus
         id: check_status
         run: |
-          response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:${{ vars.VARIABLE_PORT_SERVER }}/ping) &&
-          echo "::set-output name=response_code::$response"
+          response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:${{ vars.VARIABLE_PORT_SERVER }}/ping)
+          echo "name=response_code=$response" >> $GITHUB_OUTPUT
 
       - name: Handle Non-200 Response
         if: ${{ steps.check_status.outputs.response != '200' }}
