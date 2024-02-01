@@ -127,6 +127,7 @@ jobs:
       - name: Rollback Action
         if: ${{ steps.check-status.outputs.response-status != 200 }}
         run: |
+          set +e
           if [ -f "/home/$(whoami)/java_files/crontab_backup" ]; then
               echo "crontab_backup file found."
 
@@ -153,6 +154,13 @@ jobs:
               fi
           else
               echo "crontab_backup file not found."
+          fi
+          if [[ $exit_code -eq 143 ]]; then
+            echo "Ignorando código de saída 143."
+            exit 0
+          elif [[ $exit_code -ne 0 ]]; then
+            echo "Erro ao executar o comando: $exit_code"
+            exit $exit_code 
           fi
 
 
