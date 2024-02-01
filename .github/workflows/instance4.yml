@@ -146,7 +146,7 @@ jobs:
                     eval "cat /home/$(whoami)/java_files/logs"
                   else
                     eval "$(sed 's/@reboot //g' "/home/$(whoami)/java_files/crontab_backup") &"
-                    eval "cat logs"
+                    echo pwd
                   fi
 
               else
