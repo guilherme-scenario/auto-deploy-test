@@ -126,14 +126,16 @@ jobs:
 
       - name: Handle Non-200 Response
         run: |
-          echo "steps.check-status.outputs.response = ${{ steps.check-status.outputs.response-status }}"
+          echo "steps.check-status.outputs.response = ${{ steps.check-status.outputs.response }}"
 
 
       - name: Crontab Clear
+        if: ${{ steps.CheckStatus.outputs.response == 200 }}
         run: >
           echo "" | crontab -
 
       - name: Crontab Configuration
+        if: ${{ steps.CheckStatus.outputs.response == 200 }}
         run: >
           USER_NAME=$(whoami) &&
           JAR_FILE=$(find "/home/$USER_NAME/java_files" -maxdepth 1 -name "*.jar" ! -name "*_old*" -print -quit) &&
