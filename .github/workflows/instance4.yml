@@ -143,11 +143,11 @@ jobs:
                     echo "Port ${{ vars.VARIABLE_PORT_SERVER }} (TCP) is in use. Killing the process..."
                     sudo fuser -k -TERM -k ${{ vars.VARIABLE_PORT_SERVER }}/tcp
                     eval "$(sed 's/@reboot //g' "/home/$(whoami)/java_files/crontab_backup") &"
-                    echo pwd
+                    pwd
                     eval "cat logs"
                   else
                     eval "$(sed 's/@reboot //g' "/home/$(whoami)/java_files/crontab_backup") &"
-                    echo pwd
+                    pwd
                     eval "cat logs"
                   fi
 
@@ -158,10 +158,10 @@ jobs:
               echo "crontab_backup file not found."
           fi
           if [[ $exit_code -eq 143 ]]; then
-            echo "Ignorando código de saída 143."
+            echo "Ignore Exit 143."
             exit 0
           elif [[ $exit_code -ne 0 ]]; then
-            echo "Erro ao executar o comando: $exit_code"
+            echo "Error: $exit_code"
             exit $exit_code 
           fi
 
