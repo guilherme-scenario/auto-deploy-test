@@ -126,7 +126,7 @@ jobs:
 
       - name: Handle Non-200 Response
         run: |
-          echo "steps.check-status.outputs.response = ${{ steps.check-status.outputs.response }}"
+          echo "steps.check-status.outputs.response = ${{ steps.check-status.outputs.response-status }}"
 
 
       - name: Crontab Clear
