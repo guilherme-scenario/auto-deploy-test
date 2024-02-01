@@ -135,8 +135,17 @@ jobs:
 
                   NEW_JAR_FILE="${JAR_FILE%_old.jar}.jar"
                   echo "Removing _old suffix from JAR file: $NEW_JAR_FILE"
-
-                  sed '1d' "/home/$(whoami)/java_files/crontab_backup" | crontab -
+          
+                  if sudo fuser -s ${{ vars.VARIABLE_PORT_SERVER }}/tcp; then
+                    echo "Port ${{ vars.VARIABLE_PORT_SERVER }} (TCP) is in use. Killing the process..."
+                    sudo fuser -k -TERM -k ${{ vars.VARIABLE_PORT_SERVER }}/tcp
+                  fi
+                    if sudo fuser -s ${{ vars.VARIABLE_PORT_SERVER }}/udp; then
+                    echo "Port ${{ vars.VARIABLE_PORT_SERVER }} (UDP) is in use. Killing the process..."
+                    sudo fuser -k -TERM -k ${{ vars.VARIABLE_PORT_SERVER }}/udp
+                  fi
+          
+                  eval "$(sed 's/@reboot //g' "/home/$(whoami)/java_files/crontab_backup")"
               else
                   echo "Old JAR file not found."
               fi
