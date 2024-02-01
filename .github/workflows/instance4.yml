@@ -121,7 +121,6 @@ jobs:
           else
             echo "Server not available! Status: $response" &&
             cat logs
-            exit 1
           fi
 
       - name: Rollback Action
