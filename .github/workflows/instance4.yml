@@ -147,7 +147,7 @@ jobs:
                     sleep 10 && cat logs
                   else
                     eval "$(sed 's/@reboot //g' "/home/$(whoami)/java_files/crontab_backup") &"
-                    sleep 10 && cat logs
+                    sleep 10 && tail -n "$(tput lines)" logs | cat
                   fi
 
               else
