@@ -111,7 +111,7 @@ jobs:
           cat logs
 
 
-      - name: CheckStatus
+      - name: Check Status
         id: check-status
         run: |
           sleep 2 &&
