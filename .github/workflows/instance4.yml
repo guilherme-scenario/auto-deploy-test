@@ -144,12 +144,10 @@ jobs:
                     echo "Port ${{ vars.VARIABLE_PORT_SERVER }} (TCP) is in use. Killing the process..."
                     sudo fuser -k -TERM -k ${{ vars.VARIABLE_PORT_SERVER }}/tcp
                     eval "$(sed 's/@reboot //g' "/home/$USER_NAME/java_files/crontab_backup") &"
-                    sleep 10
-                    eval "cat logs"
+                    sleep 10 && cat logs
                   else
                     eval "$(sed 's/@reboot //g' "/home/$USER_NAMEs/java_files/crontab_backup") &"
-                    sleep 10
-                    eval "cat logs"
+                    sleep 10 && cat logs
                   fi
 
               else
