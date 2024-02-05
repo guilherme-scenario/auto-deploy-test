@@ -16,7 +16,7 @@ jobs:
   build-runner:
     runs-on: runner_new_7
     name: Instance 4
-    if: github.ref == 'refs/heads/master'
+    if: contains(github.event.head_commit.message, '--deploy-prod')
 
     steps:
       - uses: actions/checkout@v3
