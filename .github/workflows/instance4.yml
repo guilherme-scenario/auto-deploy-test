@@ -99,7 +99,7 @@ jobs:
             ANNOTATION_TEST_4=${{ secrets.ANNOTATION_TEST_4 }} \
             ANNOTATION_TEST_5=${{ secrets.ANNOTATION_TEST_5 }} \
             ANNOTATION_TEST_6=${{ vars.VARIABLE_TEST }} \
-            java -jar "$JAR_FILE" >> logs &
+            java -jar "$JAR_FILE" >> /home/$(whoami)/java_files/logs &
           else
             echo "No jar file found."
             exit 1
