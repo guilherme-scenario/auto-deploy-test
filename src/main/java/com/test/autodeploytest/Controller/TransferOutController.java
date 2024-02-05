@@ -13,7 +13,7 @@ import java.util.Random;
 @RequestMapping("transfer")
 public class TransferOutController {
 
-    private static final int FILE_SIZE_MB = 1;
+    private static final int FILE_SIZE_MB = 50;
     private static final int BUFFER_SIZE = 1024;
 
     @GetMapping("")

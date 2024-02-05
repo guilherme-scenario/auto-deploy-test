@@ -87,6 +87,7 @@ jobs:
       - name: Execute Jar File
         run: |
           sleep 3
+          > /home/$USER_NAME/java_files/logs
           USER_NAME=$(whoami)
           JAR_FILE=$(find "/home/$USER_NAME/java_files" -maxdepth 1 -name "*.jar" ! -name "*_old*" -print -quit)
           if [ -n "$JAR_FILE" ]; then
@@ -141,13 +142,13 @@ jobs:
                   echo "Removing _old suffix from JAR file: $NEW_JAR_FILE"
           
                   if sudo fuser -s ${{ vars.VARIABLE_PORT_SERVER }}/tcp; then
-                    > logs
+                    > /home/$USER_NAME/java_files/logs
                     echo "Port ${{ vars.VARIABLE_PORT_SERVER }} (TCP) is in use. Killing the process..."
                     sudo fuser -k -TERM -k ${{ vars.VARIABLE_PORT_SERVER }}/tcp
                     eval "$(sed 's/@reboot //g' "/home/$(whoami)/java_files/crontab_backup") &"
                     sleep 10 && cat /home/$USER_NAME/java_files/logs
                   else 
-                    > logs
+                    > /home/$USER_NAME/java_files/logs
                     eval "$(sed 's/@reboot //g' "/home/$(whoami)/java_files/crontab_backup") &"
                     sleep 10 && cat /home/$USER_NAME/java_files/logs
                   fi
