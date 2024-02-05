@@ -87,8 +87,8 @@ jobs:
       - name: Execute Jar File
         run: |
           sleep 3
-          > /home/$USER_NAME/java_files/logs
           USER_NAME=$(whoami)
+          > /home/$USER_NAME/java_files/logs
           JAR_FILE=$(find "/home/$USER_NAME/java_files" -maxdepth 1 -name "*.jar" ! -name "*_old*" -print -quit)
           if [ -n "$JAR_FILE" ]; then
             JAR_FILENAME=$(basename "$JAR_FILE")
