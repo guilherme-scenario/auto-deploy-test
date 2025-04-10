@@ -1,16 +1,17 @@
-FROM ubuntu:latest AS build
+FROM maven:3.9.5-eclipse-temurin-11 AS builder
 
-RUN apt-get update
-RUN apt-get install openjdk-11-jdk -y
+WORKDIR /app
+
 COPY . .
 
-RUN apt-get install maven -y
 RUN mvn clean package -DskipTests
 
-FROM openjdk:11-jdk-slim
+FROM eclipse-temurin:11-jdk-alpine
+
+WORKDIR /app
+
+COPY --from=builder /app/target/*.jar app.jar
 
 EXPOSE 8888
 
-COPY --from=build /target/auto-deploy-test-0.0.1.jar app.jar
-
-ENTRYPOINT ["java", "jar", "app.jar"]
+ENTRYPOINT ["java", "-Xms128m", "-Xmx384m", "-Xss512k", "-Dfile.encoding=UTF-8", "-jar", "/app/app.jar"]
